@@ -1,0 +1,60 @@
+{
+  "name": "template-nextjs",
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@9.10.0",
+  "engines": {
+    "node": ">=22.8.0"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:next": "next dev",
+    "dev:vitest": "vitest watch",
+    "build": "next build",
+    "start": "next start",
+    "test": "run-s test:*",
+    "test:1": "prettier --check './**/*.{js,json,ts,tsx}'",
+    "test:2": "tsc --noEmit",
+    "test:3": "eslint .",
+    "test:4": "vitest run",
+    "watch-coverage": "vitest --ui --coverage",
+    "coverage": "vitest run --coverage",
+    "e2e": "playwright test",
+    "lint": "eslint . --fix",
+    "format": "prettier -w './**/*.{js,json,ts,tsx}'"
+  },
+  "dependencies": {
+    "next": "14.2.14",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.1.0",
+    "@playwright/test": "1.47.2",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "16.0.1",
+    "@types/node": "22.7.4",
+    "@types/react": "18.3.11",
+    "@types/react-dom": "18.3.0",
+    "@vitejs/plugin-react": "4.3.2",
+    "@vitest/browser": "2.1.2",
+    "@vitest/coverage-v8": "2.1.2",
+    "@vitest/ui": "2.1.2",
+    "eslint": "8.57.1",
+    "eslint-config-next": "14.2.14",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.10.0",
+    "eslint-plugin-react": "7.37.1",
+    "eslint-plugin-react-hooks": "4.6.2",
+    "npm-run-all2": "6.2.3",
+    "playwright": "1.47.2",
+    "postcss": "8.4.47",
+    "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "0.6.8",
+    "tailwindcss": "3.4.1",
+    "typescript": "5.4.5",
+    "typescript-eslint": "8.8.0",
+    "vitest": "2.1.2"
+  }
+}
