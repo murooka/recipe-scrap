@@ -2,6 +2,9 @@
 FROM node:22-slim AS base
 WORKDIR /app
 ENV TZ=Asia/Tokyo
+RUN apt-get update && apt-get install -y openssl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
 
@@ -26,6 +29,7 @@ RUN corepack enable pnpm && pnpm -v
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
 
 
@@ -35,7 +39,7 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=tini --chown=nodejs:nodejs /tini /tini
+COPY --from=tini --chown=node:node /tini /tini
 ENTRYPOINT ["/tini", "--"]
 COPY --chown=node:node ./public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./

@@ -23,7 +23,12 @@
     "coverage": "vitest run --coverage",
     "e2e": "playwright test",
     "lint": "eslint . --fix",
-    "format": "prettier -w './**/*.{js,json,ts,tsx}'"
+    "format": "prettier -w './**/*.{js,json,ts,tsx}'",
+    "prod-deploy": "PROJECT=recipe-scrap-prod pnpm run deploy",
+    "deploy": "IMAGE=asia-northeast1-docker.pkg.dev/$PROJECT/cloud-run/web run-s deploy:*",
+    "deploy:1": "docker build --platform linux/amd64 -t $IMAGE .",
+    "deploy:2": "docker push $IMAGE:latest",
+    "deploy:3": "gcloud --project $PROJECT run deploy web --image $IMAGE --platform managed --region asia-northeast1"
   },
   "dependencies": {
     "@google-cloud/vision": "4.3.2",
