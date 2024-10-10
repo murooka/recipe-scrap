@@ -1,3 +1,5 @@
+import "server-only";
+
 import vision from "@google-cloud/vision";
 
 export async function extractText(): Promise<void> {
