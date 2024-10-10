@@ -1,5 +1,3 @@
-import "server-only";
-
 import { OAuth2Client } from "google-auth-library";
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
@@ -14,16 +12,19 @@ export function createGoogleAuthUrl(state: string): string {
   return client.generateAuthUrl({ scope: ["openid"], prompt: "", state });
 }
 
-export async function getGoogleUser(
+type IdToken = {
+  sub: string;
+};
+export async function getIdTokenClaim(
   code: string,
-): Promise<Result<{ userId: string }, "invalid_code" | "invalid_id_token">> {
+): Promise<Result<IdToken, "id_token_not_found" | "claim_not_found">> {
   const res = await client.getToken(code);
   const idToken = res.tokens.id_token;
-  if (!idToken) return err("invalid_code");
+  if (idToken == null) return err("id_token_not_found");
 
   const ticket = await client.verifyIdToken({ idToken });
-  const userId = ticket.getUserId();
-  if (!userId) return err("invalid_id_token");
+  const claim = ticket.getPayload();
+  if (claim == null) return err("claim_not_found");
 
-  return ok({ userId });
+  return ok({ sub: claim.sub });
 }

@@ -69,10 +69,6 @@ export default ts.config(
       "import/order": [
         "warn",
         {
-          pathGroups: [
-            { pattern: "@lib/**", group: "internal" },
-            { pattern: "@server/**", group: "internal" },
-          ],
           groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
           "newlines-between": "always",
           alphabetize: { order: "asc", caseInsensitive: true },

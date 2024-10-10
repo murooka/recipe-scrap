@@ -1,28 +1,22 @@
-import "server-only";
-
-import { err, ok } from "neverthrow";
-import type { Result } from "neverthrow";
-
-import { createSecureRandomString } from "@server/util/data";
-
 import { prisma } from "../db";
+import { createSecureRandomString } from "../util/data";
 
 export type User = {
   id: string;
 };
 
-export async function getUserByGoogleUserId(id: string): Promise<User | null> {
-  const googleAuth = await prisma.userAuthGoogle.findUnique({ where: { id } });
+export async function getUserByGoogle(sub: string): Promise<User | null> {
+  const googleAuth = await prisma.userAuthGoogle.findUnique({ where: { id: sub } });
   if (googleAuth == null) return null;
 
   return await prisma.user.findUnique({ where: { id: googleAuth.userId } });
 }
 
-export async function createUserWithGoogleUserId(id: string): Promise<User> {
+export async function createUserWithGoogle(sub: string): Promise<User> {
   const user = await prisma.user.create({
     data: {
       UserAuthGoogle: {
-        create: { id },
+        create: { id: sub },
       },
     },
   });
@@ -45,20 +39,4 @@ export async function issueSession(user: User): Promise<Session> {
   };
   await prisma.session.create({ data });
   return data;
-}
-
-export async function verifySession(
-  token: string,
-): Promise<Result<User, "session_not_found" | "session_expired" | "user_not_found">> {
-  const session = await prisma.session.findUnique({ where: { token } });
-  if (session == null) return err("session_not_found");
-
-  if (session.expiresAt < new Date()) {
-    return err("session_expired");
-  }
-
-  const user = await prisma.user.findUnique({ where: { id: session.userId } });
-  if (user == null) return err("user_not_found");
-
-  return ok(user);
 }

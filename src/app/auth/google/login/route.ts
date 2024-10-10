@@ -1,12 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import { createGoogleAuthUrl } from "@server/auth/google";
-import { COOKIE_NAME_GOOGLE_STATE, bakeCookie } from "@server/cookie";
-import { createSecureRandomString } from "@server/util/data";
+import { prepareAuthzRequest } from "@facade/google";
+import { COOKIE_NAME_GOOGLE_STATE, bakeCookie } from "@web/cookie";
 
 export function GET(_req: Request): Response {
-  const state = createSecureRandomString(12);
-  const url = createGoogleAuthUrl(state);
+  const { url, state } = prepareAuthzRequest();
 
   return new Response(null, {
     status: 302,

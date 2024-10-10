@@ -5,8 +5,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { verifySession } from "@server/auth";
-import { COOKIE_NAME_SESSION } from "@server/cookie";
+import { verifySession } from "@facade/auth";
+import { COOKIE_NAME_SESSION } from "@web/cookie";
 
 export default async function Home(): Promise<ReactNode> {
   const cookieStore = cookies();

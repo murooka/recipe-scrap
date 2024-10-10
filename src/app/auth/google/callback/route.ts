@@ -1,9 +1,8 @@
 import type { NextRequest } from "next/server";
 
-import type { User } from "@server/auth";
-import { createUserWithGoogleUserId, getUserByGoogleUserId, issueSession } from "@server/auth";
-import { getGoogleUser } from "@server/auth/google";
-import { COOKIE_NAME_GOOGLE_STATE, COOKIE_NAME_SESSION, bakeCookie } from "@server/cookie";
+import { issueSessionWithGoogle } from "@facade/auth";
+import { verifyCallback } from "@facade/google";
+import { COOKIE_NAME_GOOGLE_STATE, COOKIE_NAME_SESSION, bakeCookie } from "@web/cookie";
 
 export const dynamic = "force-dynamic";
 
@@ -14,27 +13,13 @@ function redirect(req: NextRequest, err: string) {
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
-  const state = req.nextUrl.searchParams.get("state");
   const cookieState = req.cookies.get(COOKIE_NAME_GOOGLE_STATE);
-  if (state !== cookieState?.value) return redirect(req, "invalid_request");
+  if (cookieState == null) return redirect(req, "invalid_request");
 
-  const code = req.nextUrl.searchParams.get("code");
-  if (code == null) return redirect(req, "invalid_request");
+  const claim = await verifyCallback(req.nextUrl, cookieState.value);
+  if (claim.isErr()) return redirect(req, "invalid_request");
 
-  const googleUser = await getGoogleUser(code);
-  if (googleUser.isErr()) {
-    return redirect(req, googleUser.error);
-  }
-
-  let user: User;
-  const savedUser = await getUserByGoogleUserId(googleUser.value.userId);
-  if (savedUser == null) {
-    user = await createUserWithGoogleUserId(googleUser.value.userId);
-  } else {
-    user = savedUser;
-  }
-
-  const session = await issueSession(user);
+  const session = await issueSessionWithGoogle(claim.value.sub);
 
   return new Response(null, {
     status: 302,
