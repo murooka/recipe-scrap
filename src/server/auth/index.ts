@@ -1,5 +1,7 @@
 import "server-only";
 
+import { err, ok } from "neverthrow";
+import type { Result } from "neverthrow";
 import { ulid } from "ulid";
 
 import { createSecureRandomString } from "@server/util/data";
@@ -32,10 +34,31 @@ export type Session = {
   userId: string;
   expiresAt: Date;
 };
+const sessionByToken = new Map<string, Session>();
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function issueSession(user: User): Promise<Session> {
   const token = createSecureRandomString(32);
   const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 
-  return { token, userId: user.id, expiresAt };
+  const session = { token, userId: user.id, expiresAt };
+  sessionByToken.set(token, session);
+  return session;
+}
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function verifySession(
+  token: string,
+): Promise<Result<User, "session_not_found" | "session_expired" | "user_not_found">> {
+  const session = sessionByToken.get(token);
+  if (session == null) return err("session_not_found");
+
+  if (session.expiresAt < new Date()) {
+    sessionByToken.delete(token);
+    return err("session_expired");
+  }
+
+  const user = usersById.get(session.userId);
+  if (user == null) return err("user_not_found");
+
+  return ok(user);
 }
