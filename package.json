@@ -31,6 +31,7 @@
     "deploy:3": "gcloud --project $PROJECT run deploy web --image $IMAGE --platform managed --region asia-northeast1"
   },
   "dependencies": {
+    "@google-cloud/storage": "7.13.0",
     "@google-cloud/vision": "4.3.2",
     "@prisma/client": "5.20.0",
     "cookie": "1.0.0",

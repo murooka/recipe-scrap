@@ -1,9 +1,9 @@
 import vision from "@google-cloud/vision";
 
-export async function extractText(): Promise<string> {
+export async function extractText(url: string): Promise<string> {
   const client = new vision.ImageAnnotatorClient();
 
-  const [result] = await client.documentTextDetection(`gs://recipe-scrap-prod-vision-assets/IMG_8597.JPG`);
+  const [result] = await client.documentTextDetection(url);
   console.dir(result, { depth: null });
   return result.fullTextAnnotation?.text ?? "";
 }
