@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -9,14 +9,14 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(uuid()) @db.Uuid
-  UserAuthGoogle UserAuthGoogle[]
+  id             String          @id @default(uuid()) @db.Uuid
+  UserAuthGoogle UserAuthGoogle?
   Session        Session[]
 }
 
 model UserAuthGoogle {
   id        String   @id
-  userId    String   @db.Uuid
+  userId    String   @unique @db.Uuid
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
