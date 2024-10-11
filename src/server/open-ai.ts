@@ -10,7 +10,7 @@ type Ingredient = {
   name: string;
   amount: string;
 };
-type Recipe = {
+export type Recipe = {
   name: string;
   ingredients: Ingredient[];
   steps: string[];
