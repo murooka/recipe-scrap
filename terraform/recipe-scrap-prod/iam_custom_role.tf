@@ -12,3 +12,11 @@ resource "google_project_iam_custom_role" "cloud_run_web_runner" {
     "storage.objects.list"
   ]
 }
+
+resource "google_project_iam_custom_role" "storage_file_viewer" {
+  role_id     = "StorageFileViewer"
+  stage       = "GA"
+  title       = "Storage ファイル閲覧者"
+  description = "Storage ファイルのみ閲覧のみ可能なロール"
+  permissions = ["storage.objects.get"]
+}

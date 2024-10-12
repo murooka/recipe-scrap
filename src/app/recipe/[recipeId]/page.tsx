@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -13,13 +14,24 @@ export default async function Page(props: Props): Promise<ReactNode> {
 
   const recipe = await prisma.recipe.findUnique({
     where: { id: props.params.recipeId, userId: user.id },
-    select: { id: true, name: true, steps: true, ingredients: { select: { name: true, amount: true } } },
+    select: {
+      id: true,
+      name: true,
+      thumbnailUrl: true,
+      steps: true,
+      ingredients: { select: { name: true, amount: true } },
+    },
   });
   if (recipe == null) notFound();
 
   return (
     <main className="space-y-4 p-4">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {recipe.thumbnailUrl && <img src={recipe.thumbnailUrl} alt="" className="h-64 w-64 object-cover" />}
       <h1>{recipe.name}</h1>
+      <div>
+        <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
+      </div>
       <ul>
         {recipe.ingredients.map((ingredient) => (
           <li key={ingredient.name}>

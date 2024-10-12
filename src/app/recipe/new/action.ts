@@ -1,5 +1,7 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 import { createRecipeFromImage } from "@facade/recipe";
 
 import { authenticate } from "../../authenticate";
@@ -12,4 +14,6 @@ export async function action(formData: FormData): Promise<void> {
   if (typeof image === "string") throw new Error("invalid_image");
 
   await createRecipeFromImage(user, image);
+
+  redirect("/recipe");
 }

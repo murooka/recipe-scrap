@@ -35,6 +35,7 @@ model Recipe {
   userId            String             @db.Uuid
   user              User               @relation(fields: [userId], references: [id])
   name              String
+  thumbnailUrl      String?
   ingredients       Ingredient[]
   steps             String[]
   createdAt         DateTime           @default(now())
