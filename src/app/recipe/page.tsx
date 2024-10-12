@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { prisma } from "../../server/db";
@@ -16,9 +17,9 @@ export default async function Page(): Promise<ReactNode> {
     <main className="grid h-screen w-full place-items-center">
       <div>
         {recipes.map((recipe) => (
-          <div key={recipe.id}>
-            <p>{recipe.name}</p>
-          </div>
+          <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
+            {recipe.name}
+          </Link>
         ))}
       </div>
     </main>
