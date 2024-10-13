@@ -2,8 +2,9 @@
 
 import { redirect } from "next/navigation";
 
-import { prisma } from "../../../../server/db";
-import { uploadUserImage } from "../../../../server/storage";
+import { prisma } from "@facade/prisma";
+import { updateRecipeThumbnail } from "@facade/recipe";
+
 import { authenticate } from "../../../authenticate";
 
 export async function action(formData: FormData): Promise<void> {
@@ -21,11 +22,7 @@ export async function action(formData: FormData): Promise<void> {
   const user = await authenticate();
   if (recipe.userId !== user.id) throw new Error("unauthorized");
 
-  const thumbnailUrl = await uploadUserImage(user, thumbnail);
-  await prisma.recipe.update({
-    where: { id: id },
-    data: { thumbnailUrl },
-  });
+  await updateRecipeThumbnail(user, id, thumbnail);
 
   redirect(`/recipe/${id}`);
 }

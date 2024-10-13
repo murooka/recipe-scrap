@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@facade/*": ["./src/server/facade/*"],
+      "@facade/*": ["./src/facade/*"],
       "@web/*": ["./src/web/*"]
     }
   },

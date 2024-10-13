@@ -1,9 +1,9 @@
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 
-import { createUserWithGoogle, getUserByGoogle, issueSession } from "../auth";
-import type { Session, User } from "../auth";
-import { prisma } from "../db";
+import { createUserWithGoogle, getUserByGoogle, issueSession } from "../server/auth";
+import type { Session, User } from "../server/auth";
+import { prisma } from "../server/db";
 
 export async function verifySession(
   token: string,

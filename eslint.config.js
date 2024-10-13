@@ -66,6 +66,18 @@ export default ts.config(
       ...importPlugin.configs["recommended"].rules,
       "import/no-useless-path-segments": "warn",
       "import/consistent-type-specifier-style": ["warn", "prefer-top-level"],
+      "import/no-restricted-paths": [
+        "warn",
+        {
+          zones: [
+            {
+              from: "./src/server",
+              target: "./src/!(facade|server)/**/*",
+              message: "serverにはfacadeを経由してアクセスしてください",
+            },
+          ],
+        },
+      ],
       "import/order": [
         "warn",
         {

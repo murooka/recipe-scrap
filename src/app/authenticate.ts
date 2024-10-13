@@ -2,9 +2,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { verifySession } from "@facade/auth";
+import type { User } from "@facade/types";
 import { COOKIE_NAME_SESSION } from "@web/cookie";
-
-import type { User } from "../server/auth";
 
 export async function authenticate(): Promise<User> {
   const cookieStore = cookies();

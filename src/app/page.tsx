@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { prisma } from "../server/db";
+import { prisma } from "@facade/prisma";
 
 import { authenticate } from "./authenticate";
 

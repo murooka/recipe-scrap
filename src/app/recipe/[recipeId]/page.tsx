@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { prisma } from "../../../server/db";
+import { prisma } from "@facade/prisma";
+
 import { authenticate } from "../../authenticate";
 
 type Props = {

@@ -1,8 +1,8 @@
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 
-import { createGoogleAuthUrl, getIdTokenClaim } from "../auth/google";
-import { createSecureRandomString } from "../util/data";
+import { createGoogleAuthUrl, getIdTokenClaim } from "../server/auth/google";
+import { createSecureRandomString } from "../server/util/data";
 
 export function prepareAuthzRequest(): { url: string; state: string } {
   const state = createSecureRandomString(12);

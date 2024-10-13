@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 import { describe, test, expect, beforeAll } from "vitest";
 
-import { __setTestPrismaClient } from "../db";
+import { __setTestPrismaClient } from "../server/db";
 
 import { verifySession } from "./auth";
 
