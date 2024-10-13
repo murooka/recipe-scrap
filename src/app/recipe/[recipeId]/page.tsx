@@ -25,25 +25,35 @@ export default async function Page(props: Props): Promise<ReactNode> {
   if (recipe == null) notFound();
 
   return (
-    <main className="space-y-4 p-4">
+    <main>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      {recipe.thumbnailUrl && <img src={recipe.thumbnailUrl} alt="" className="h-64 w-64 object-cover" />}
-      <h1>{recipe.name}</h1>
-      <div>
-        <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
-      </div>
-      <ul>
-        {recipe.ingredients.map((ingredient) => (
-          <li key={ingredient.name}>
-            {ingredient.name}: {ingredient.amount}
-          </li>
-        ))}
-      </ul>
-      <ol className="list-decimal pl-5">
-        {recipe.steps.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
-      </ol>
+      {recipe.thumbnailUrl && <img src={recipe.thumbnailUrl} alt="" className="aspect-[4/3] w-full object-cover" />}
+      <section className="space-y-4 p-4">
+        <h1 className="text-xl font-medium">{recipe.name}</h1>
+        <div>
+          <p className="font-bold">材料</p>
+          <ul>
+            {recipe.ingredients.map((ingredient) => (
+              <li key={ingredient.name}>
+                {ingredient.name}: {ingredient.amount}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="font-bold">手順</p>
+          <ol className="list-decimal pl-5">
+            {recipe.steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <Link href={`/recipe/${recipe.id}/edit`} className="underline">
+            編集
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }

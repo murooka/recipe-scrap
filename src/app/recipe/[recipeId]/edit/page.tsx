@@ -15,29 +15,51 @@ export default async function Page(props: Props): Promise<ReactNode> {
 
   const recipe = await prisma.recipe.findUnique({
     where: { id: props.params.recipeId, userId: user.id },
-    select: { id: true, name: true, steps: true, ingredients: { select: { name: true, amount: true } } },
+    select: {
+      id: true,
+      name: true,
+      thumbnailUrl: true,
+      steps: true,
+      ingredients: { select: { name: true, amount: true } },
+    },
   });
   if (recipe == null) notFound();
 
   return (
-    <main className="space-y-4 p-4">
-      <form action={action}>
+    <main>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {recipe.thumbnailUrl && <img src={recipe.thumbnailUrl} alt="" className="aspect-[4/3] w-full object-cover" />}
+      <div className="p-4">
+        <input
+          type="file"
+          name="thumbnail"
+          className="block text-sm font-medium file:rounded-full file:border-none file:bg-pale file:px-4 file:py-2"
+        />
+      </div>
+      <form action={action} className="p-4">
         <input type="hidden" name="id" value={recipe.id} />
-        <h1>{recipe.name}</h1>
-        <input type="file" name="thumbnail" />
-        <ul>
-          {recipe.ingredients.map((ingredient) => (
-            <li key={ingredient.name}>
-              {ingredient.name}: {ingredient.amount}
-            </li>
-          ))}
-        </ul>
-        <ol className="list-decimal pl-5">
-          {recipe.steps.map((step) => (
-            <li key={step}>{step}</li>
-          ))}
-        </ol>
-        <button type="submit">保存</button>
+        <div className="space-y-4">
+          <h1 className="text-xl font-medium">{recipe.name}</h1>
+          <div>
+            <p className="font-bold">材料</p>
+            <ul>
+              {recipe.ingredients.map((ingredient) => (
+                <li key={ingredient.name}>
+                  {ingredient.name}: {ingredient.amount}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="font-bold">手順</p>
+            <ol className="list-decimal pl-5">
+              {recipe.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+          <button type="submit">保存</button>
+        </div>
       </form>
     </main>
   );

@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -15,19 +16,27 @@ export default async function Home(): Promise<ReactNode> {
   });
 
   return (
-    <main className="space-y-4 p-4">
-      <div>
-        <Link href="/recipe/new">新規</Link>
+    <>
+      <main className="relative space-y-4 p-4">
+        <div className="grid grid-cols-2 gap-4">
+          {recipes.map((recipe) => (
+            <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
+                alt=""
+                className="aspect-square object-cover"
+              />
+              <p className="font-medium">{recipe.name}</p>
+            </Link>
+          ))}
+        </div>
+      </main>
+      <div className="fixed bottom-4 right-4">
+        <Link href="/recipe/new" className="block rounded-full bg-pink p-3 text-white shadow hover:bg-pink/70">
+          <Plus aria-label="新規レシピ" />
+        </Link>
       </div>
-      <div>
-        {recipes.map((recipe) => (
-          <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"} alt="" className="h-48 w-48" />
-            <p>{recipe.name}</p>
-          </Link>
-        ))}
-      </div>
-    </main>
+    </>
   );
 }
