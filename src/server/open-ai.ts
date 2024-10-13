@@ -2,10 +2,6 @@ import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 type Ingredient = {
   name: string;
   amount: string;
@@ -20,6 +16,10 @@ export type Recipe = {
 export async function structuralizeRecipe(
   text: string,
 ): Promise<Result<Recipe, "empty_response" | "invalid_response">> {
+  const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
   const content = `
 料理のレシピが書かれたテキストをお渡ししますので、それをJSON形式に変換してください。
 お渡しするテキストはOCRを利用したため不正確であったり、レシピの記載順序が入れ替わってしまっている可能性があることに気をつけてください。。
