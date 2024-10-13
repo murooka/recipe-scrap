@@ -15,5 +15,5 @@ export async function action(formData: FormData): Promise<void> {
 
   await createRecipeFromImage(user, image);
 
-  redirect("/recipe");
+  redirect("/");
 }
