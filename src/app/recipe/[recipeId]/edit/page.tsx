@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Button } from "../../../../components/button";
 import { prisma } from "../../../../server/db";
 import { authenticate } from "../../../authenticate";
 
@@ -33,7 +34,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
         <input
           type="file"
           name="thumbnail"
-          className="block text-sm font-medium file:rounded-full file:border-none file:bg-pale file:px-4 file:py-2"
+          className="block text-sm font-medium file:rounded-full file:border file:border-dark-100 file:bg-transparent file:px-4 file:py-2"
         />
       </div>
       <form action={action} className="p-4">
@@ -58,7 +59,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
               ))}
             </ol>
           </div>
-          <button type="submit">保存</button>
+          <Button type="submit">保存</Button>
         </div>
       </form>
     </main>
