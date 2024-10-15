@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-import { Button } from "../../../components/button";
+import { Button } from "@components/button";
+
 import { authenticate } from "../../authenticate";
 
 import { action } from "./action";

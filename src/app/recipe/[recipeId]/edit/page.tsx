@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Button } from "@components/button";
 import { prisma } from "@facade/prisma";
 
-import { Button } from "../../../../components/button";
 import { authenticate } from "../../../authenticate";
 
 import { action } from "./action";

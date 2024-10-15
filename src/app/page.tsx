@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { Header } from "@components/header";
 import { prisma } from "@facade/prisma";
 
 import { authenticate } from "./authenticate";
@@ -17,6 +18,9 @@ export default async function Home(): Promise<ReactNode> {
 
   return (
     <>
+      <div className="sticky top-0 z-10">
+        <Header />
+      </div>
       <main className="relative space-y-4 p-4">
         <div className="grid grid-cols-2 gap-4">
           {recipes.map((recipe) => (

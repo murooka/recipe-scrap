@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {};
@@ -15,14 +14,7 @@ export default function RootLayout({ children }: Props): ReactNode {
       <head>
         <link rel="shortcut icon" href="/favicon.svg" />
       </head>
-      <body className="text-dark">
-        <header className="sticky top-0 z-10 flex-none bg-beige">
-          <Link href="/">
-            <h1 className="px-4 py-3 text-xl font-bold">Recipe Scrap</h1>
-          </Link>
-        </header>
-        {children}
-      </body>
+      <body className="text-dark">{children}</body>
     </html>
   );
 }
