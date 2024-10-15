@@ -1,32 +1,14 @@
 import "../test/register/server-only";
 
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
-
-import { PrismaClient } from "@prisma/client";
-import { PostgreSqlContainer } from "@testcontainers/postgresql";
 import { describe, test, expect, beforeAll } from "vitest";
 
-import { __setTestPrismaClient } from "../server/db";
+import { prisma } from "../server/db";
+import { setupPostgres } from "../test/postgres";
 
 import { verifySession } from "./auth";
 
-const execAsync = promisify(exec);
-
 describe("verifySession", () => {
-  let prisma: PrismaClient;
-
-  beforeAll(async () => {
-    const container = await new PostgreSqlContainer().start();
-
-    const databaseUrl = `postgresql://${container.getUsername()}:${container.getPassword()}@${container.getHost()}:${container.getPort()}/common?schema=public`;
-    await execAsync(`DATABASE_URL=${databaseUrl} npx prisma migrate dev --skip-generate`);
-
-    prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
-    __setTestPrismaClient(prisma);
-
-    return () => container.stop();
-  });
+  beforeAll(setupPostgres);
 
   test("success", async () => {
     // setup

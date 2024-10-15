@@ -72,7 +72,7 @@ export default ts.config(
           zones: [
             {
               from: "./src/server",
-              target: "./src/!(facade|server)/**/*",
+              target: "./src/!(facade|server|test)/**/*",
               message: "serverにはfacadeを経由してアクセスしてください",
             },
           ],
