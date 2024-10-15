@@ -1,3 +1,5 @@
+import "../test/register/server-only";
+
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 
@@ -13,6 +15,7 @@ const execAsync = promisify(exec);
 
 describe("verifySession", () => {
   let prisma: PrismaClient;
+
   beforeAll(async () => {
     const container = await new PostgreSqlContainer().start();
 

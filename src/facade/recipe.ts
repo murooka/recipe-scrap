@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { Recipe } from "@prisma/client";
 
 import type { User } from "../server/auth";

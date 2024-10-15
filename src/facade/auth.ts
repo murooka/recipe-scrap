@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { Result } from "neverthrow";
 import { err, ok } from "neverthrow";
 
