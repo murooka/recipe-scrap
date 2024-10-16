@@ -6,25 +6,29 @@ import type { ReactNode } from "react";
 import { useActionState } from "react";
 
 import { Button } from "@components/button";
+import { InputFile } from "@components/input-file";
 
 import { action } from "./action";
 
 type FormProps = unknown;
 export function Form(_props: FormProps): ReactNode {
   const [state, submitAction, isPending] = useActionState(action, createOk(null));
+
   return (
-    <form action={submitAction} className="space-y-4">
-      <input
-        type="file"
-        name="image"
-        accept="image/*"
-        className="block text-sm font-medium file:rounded-full file:border file:border-secondary file:bg-transparent file:px-4 file:py-2"
-      />
-      {isOk(state) ? null : <p>{state.err}</p>}
-      <Button type="submit" disabled={isPending}>
-        {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        登録
-      </Button>
+    <form action={submitAction}>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label htmlFor="sourceImage" className="text-sm font-bold">
+            レシピ画像
+          </label>
+          <InputFile id="sourceImage" name="sourceImage" required />
+        </div>
+        {isOk(state) ? null : <p>{state.err}</p>}
+        <Button type="submit" disabled={isPending}>
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          登録
+        </Button>
+      </div>
     </form>
   );
 }
