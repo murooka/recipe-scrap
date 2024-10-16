@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { isErr } from "option-t/plain_result";
 
 import { issueSessionWithGoogle } from "@facade/auth";
 import { verifyCallback } from "@facade/google";
@@ -23,12 +24,12 @@ export async function GET(req: NextRequest): Promise<Response> {
   }
 
   const claim = await verifyCallback(req.nextUrl, cookieState.value);
-  if (claim.isErr()) {
-    console.log("failed to obtain id token claim", claim.error);
+  if (isErr(claim)) {
+    console.log("failed to obtain id token claim", claim.err);
     return redirect(req, "invalid_request");
   }
 
-  const session = await issueSessionWithGoogle(claim.value.sub);
+  const session = await issueSessionWithGoogle(claim.val.sub);
 
   return new Response(null, {
     status: 302,

@@ -1,7 +1,7 @@
 import "server-only";
 
-import type { Result } from "neverthrow";
-import { err, ok } from "neverthrow";
+import { createErr, createOk, isErr } from "option-t/plain_result";
+import type { Result } from "option-t/plain_result";
 
 import { createGoogleAuthUrl, getIdTokenClaim } from "../server/auth/google";
 import { createSecureRandomString } from "../server/util/data";
@@ -22,13 +22,13 @@ export async function verifyCallback(
   >
 > {
   const state = url.searchParams.get("state");
-  if (state !== cookieState) return err("invalid_state");
+  if (state !== cookieState) return createErr("invalid_state");
 
   const code = url.searchParams.get("code");
-  if (code == null) return err("code_not_found");
+  if (code == null) return createErr("code_not_found");
 
   const claim = await getIdTokenClaim(code);
-  if (claim.isErr()) return err(claim.error);
+  if (isErr(claim)) return createErr(claim.err);
 
-  return ok({ sub: claim.value.sub });
+  return createOk({ sub: claim.val.sub });
 }

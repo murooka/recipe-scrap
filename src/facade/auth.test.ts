@@ -1,5 +1,6 @@
 import "../test/register/server-only";
 
+import { isOk, unwrapOk } from "option-t/plain_result";
 import { describe, test, expect, beforeAll } from "vitest";
 
 import { prisma } from "../server/db";
@@ -22,7 +23,7 @@ describe("verifySession", () => {
     const user = await verifySession("abc");
 
     // verify
-    expect(user.isOk()).toBe(true);
-    expect(user._unsafeUnwrap()).toMatchObject({ id: expect.any(String) });
+    expect(isOk(user)).toBe(true);
+    expect(unwrapOk(user)).toMatchObject({ id: expect.any(String) });
   });
 });

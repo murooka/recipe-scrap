@@ -1,6 +1,6 @@
-import type { Result } from "neverthrow";
-import { err, ok } from "neverthrow";
 import OpenAI from "openai";
+import { createErr, createOk } from "option-t/plain_result";
+import type { Result } from "option-t/plain_result";
 
 type Ingredient = {
   name: string;
@@ -67,7 +67,7 @@ ${text}
   const message = res.choices[0].message.content;
   if (message == null) {
     console.dir(res, { depth: null });
-    return err("empty_response");
+    return createErr("empty_response");
   }
 
   try {
@@ -75,9 +75,9 @@ ${text}
     json = json.replace(/^```\w*/g, "");
     json = json.replace(/```$/g, "");
     const recipe: Recipe = JSON.parse(json);
-    return ok(recipe);
+    return createOk(recipe);
   } catch (e) {
     console.error("invalid json", { e, message });
-    return err("invalid_response");
+    return createErr("invalid_response");
   }
 }

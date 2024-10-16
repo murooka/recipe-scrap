@@ -35,15 +35,15 @@ importers:
       lucide-react:
         specifier: 0.453.0
         version: 0.453.0(react@19.0.0-rc-83825814-20241015)
-      neverthrow:
-        specifier: 8.0.0
-        version: 8.0.0
       next:
         specifier: 15.0.0-rc.1
         version: 15.0.0-rc.1(@babel/core@7.25.8)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-83825814-20241015(react@19.0.0-rc-83825814-20241015))(react@19.0.0-rc-83825814-20241015)
       openai:
         specifier: 4.67.3
         version: 4.67.3
+      option-t:
+        specifier: 49.2.1
+        version: 49.2.1
       react:
         specifier: 19.0.0-rc-83825814-20241015
         version: 19.0.0-rc-83825814-20241015
@@ -2453,10 +2453,6 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  neverthrow@8.0.0:
-    resolution: {integrity: sha512-SX2Z50+U27I+CF3NwHE9J8MB6+bYRRub3U+1nAKxnL6c+2vW2l/WsYEC0e3Wqg8DwiJvrquqE0YhxlVTzGJGsg==}
-    engines: {node: '>=18'}
-
   next@15.0.0-rc.1:
     resolution: {integrity: sha512-MUoMUM7u6lh5zx1fRbze2jGESj4VIqc0dplx03wN5cLbpW3RhrVD7I3+sDW1khJxi+bayAZuGx03R5qNV9y/EA==}
     engines: {node: '>=18.18.0'}
@@ -2558,6 +2554,10 @@ packages:
     peerDependenciesMeta:
       zod:
         optional: true
+
+  option-t@49.2.1:
+    resolution: {integrity: sha512-ueUhVyOyiNJ7Bd0Qkv5HWaqfCX331ZoslSTYq7xhlu8pP+8YKcKzGHVGcDZOpjXlehyS0rPd9w8OXFRfL1d52Q==}
+    engines: {node: '>=16.20.0'}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -6044,8 +6044,6 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  neverthrow@8.0.0: {}
-
   next@15.0.0-rc.1(@babel/core@7.25.8)(@playwright/test@1.48.0)(react-dom@19.0.0-rc-83825814-20241015(react@19.0.0-rc-83825814-20241015))(react@19.0.0-rc-83825814-20241015):
     dependencies:
       '@next/env': 15.0.0-rc.1
@@ -6154,6 +6152,8 @@ snapshots:
       node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
+
+  option-t@49.2.1: {}
 
   optionator@0.9.4:
     dependencies:
