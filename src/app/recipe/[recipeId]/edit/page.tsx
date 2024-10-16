@@ -9,14 +9,16 @@ import { authenticate } from "../../../authenticate";
 import { action } from "./action";
 
 type Props = {
-  params: { recipeId: string };
+  params: Promise<{ recipeId: string }>;
 };
 
 export default async function Page(props: Props): Promise<ReactNode> {
   const user = await authenticate();
 
+  const { recipeId } = await props.params;
+
   const recipe = await prisma.recipe.findUnique({
-    where: { id: props.params.recipeId, userId: user.id },
+    where: { id: recipeId, userId: user.id },
     select: {
       id: true,
       name: true,
