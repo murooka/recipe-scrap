@@ -5,8 +5,8 @@ import type { ChangeEvent, ComponentProps, ReactNode } from "react";
 
 import { Button } from "./button";
 
-type InputFileProps = ComponentProps<"input">;
-export function InputFile(props: InputFileProps): ReactNode {
+type InputImageProps = ComponentProps<"input"> & { defaultImageUrl?: string };
+export function InputImage(props: InputImageProps): ReactNode {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -21,12 +21,14 @@ export function InputFile(props: InputFileProps): ReactNode {
     }
   }, []);
 
-  const imageUrl = file ? URL.createObjectURL(file) : null;
+  const inputImageUrl = file ? URL.createObjectURL(file) : null;
   useEffect(() => {
     return () => {
-      if (imageUrl) URL.revokeObjectURL(imageUrl);
+      if (inputImageUrl) URL.revokeObjectURL(inputImageUrl);
     };
-  }, [imageUrl]);
+  }, [inputImageUrl]);
+
+  const imageUrl = inputImageUrl || props.defaultImageUrl;
 
   return (
     <div>

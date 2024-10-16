@@ -52,6 +52,14 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
   await extract(recipe.id, sourceUrl);
 }
 
+export async function updateRecipe(user: User, recipeId: string, params: { thumbnail?: File }): Promise<void> {
+  const thumbnailUrl = await (params.thumbnail ? uploadUserImage(user, params.thumbnail) : Promise.resolve(undefined));
+  await prisma.recipe.update({
+    where: { id: recipeId },
+    data: { thumbnailUrl },
+  });
+}
+
 export async function updateRecipeThumbnail(user: User, recipeId: string, thumbnail: File): Promise<void> {
   const thumbnailUrl = await uploadUserImage(user, thumbnail);
   await prisma.recipe.update({

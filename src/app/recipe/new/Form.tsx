@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { useActionState } from "react";
 
 import { Button } from "@components/button";
-import { InputFile } from "@components/input-file";
+import { InputImage } from "@components/input-image";
 
 import { action } from "./action";
 
@@ -21,14 +21,14 @@ export function Form(_props: FormProps): ReactNode {
           <label htmlFor="sourceImage" className="text-sm font-bold">
             レシピ画像
           </label>
-          <InputFile id="sourceImage" name="sourceImage" required />
+          <InputImage id="sourceImage" name="sourceImage" required />
         </div>
         <div className="space-y-2">
           <label htmlFor="thumbnailImage" className="space-x-2 text-sm font-bold">
             <span>サムネイル画像</span>
             <small className="font-normal text-secondary-fg">任意</small>
           </label>
-          <InputFile id="thumbnailImage" name="thumbnailImage" />
+          <InputImage id="thumbnailImage" name="thumbnailImage" />
         </div>
         {isOk(state) ? null : <p>{state.err}</p>}
         <Button type="submit" disabled={isPending}>
