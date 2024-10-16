@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Button } from "@components/button";
 import { Header } from "@components/header";
 import { prisma } from "@facade/prisma";
 
@@ -39,6 +40,11 @@ export default async function Page(props: Props): Promise<ReactNode> {
         <section className="space-y-4 p-4">
           <h1 className="text-xl font-medium">{recipe.name}</h1>
           <div>
+            <Button asChild variant="outline">
+              <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
+            </Button>
+          </div>
+          <div>
             <p className="font-bold">材料</p>
             <ul>
               {recipe.ingredients.map((ingredient) => (
@@ -55,11 +61,6 @@ export default async function Page(props: Props): Promise<ReactNode> {
                 <li key={step}>{step}</li>
               ))}
             </ol>
-          </div>
-          <div>
-            <Link href={`/recipe/${recipe.id}/edit`} className="underline">
-              編集
-            </Link>
           </div>
         </section>
       </main>
