@@ -6,12 +6,13 @@ import { createRecipeFromImage } from "@facade/recipe";
 
 import { authenticate } from "../../authenticate";
 
-export async function action(formData: FormData): Promise<void> {
+type State = { ok: true } | { ok: false; error: string };
+export async function action(_prevState: State, formData: FormData): Promise<State> {
   const user = await authenticate();
 
   const image = formData.get("image");
-  if (image == null) throw new Error("image_is_empty");
-  if (typeof image === "string") throw new Error("invalid_image");
+  if (image == null) return { ok: false, error: "画像を選択してください" };
+  if (typeof image === "string") return { ok: false, error: "画像を選択してください" };
 
   await createRecipeFromImage(user, image);
 
