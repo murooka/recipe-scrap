@@ -16,7 +16,10 @@ export async function action(_prevState: State, formData: FormData): Promise<Sta
   if (sourceImage == null) return createErr("レシピ画像を選択してください");
   if (typeof sourceImage === "string") return createErr("レシピ画像を選択してください");
 
-  await createRecipeFromImage(user, sourceImage);
+  const thumbnailImage = formData.get("thumbnailImage");
+  if (typeof thumbnailImage === "string") return createErr("サムネイル画像を選択してください");
+
+  await createRecipeFromImage(user, thumbnailImage, sourceImage);
 
   redirect("/");
 }

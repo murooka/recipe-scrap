@@ -23,6 +23,13 @@ export function Form(_props: FormProps): ReactNode {
           </label>
           <InputFile id="sourceImage" name="sourceImage" required />
         </div>
+        <div className="space-y-2">
+          <label htmlFor="thumbnailImage" className="space-x-2 text-sm font-bold">
+            <span>サムネイル画像</span>
+            <small className="font-normal text-secondary-fg">任意</small>
+          </label>
+          <InputFile id="thumbnailImage" name="thumbnailImage" />
+        </div>
         {isOk(state) ? null : <p>{state.err}</p>}
         <Button type="submit" disabled={isPending}>
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

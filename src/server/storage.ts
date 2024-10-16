@@ -7,7 +7,7 @@ import { Storage } from "@google-cloud/storage";
 
 import type { User } from "./auth";
 
-export async function upload(file: File): Promise<string> {
+export async function uploadVisionImage(file: File): Promise<string> {
   const storage = new Storage();
 
   const uuid = randomUUID();

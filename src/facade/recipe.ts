@@ -6,7 +6,7 @@ import { isErr } from "option-t/plain_result";
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { structuralizeRecipe } from "../server/open-ai";
-import { upload, uploadUserImage } from "../server/storage";
+import { uploadVisionImage, uploadUserImage } from "../server/storage";
 import { extractText } from "../server/vision";
 
 async function extract(recipeId: string, url: string): Promise<void> {
@@ -32,21 +32,24 @@ async function extract(recipeId: string, url: string): Promise<void> {
   });
 }
 
-export async function createRecipeFromImage(user: User, image: File): Promise<void> {
-  const url = await upload(image);
-  console.log(url);
+export async function createRecipeFromImage(user: User, thumbnail: File | null, source: File): Promise<void> {
+  const [sourceUrl, thumbnailUrl] = await Promise.all([
+    uploadVisionImage(source),
+    thumbnail ? uploadUserImage(user, thumbnail) : Promise.resolve(null),
+  ]);
 
   const recipe = await prisma.recipe.create({
     data: {
       name: "",
       ingredients: {},
       steps: [],
+      thumbnailUrl: thumbnailUrl,
       user: { connect: { id: user.id } },
-      RecipeSourceImage: { create: { url } },
+      RecipeSourceImage: { create: { url: sourceUrl } },
     },
   });
 
-  await extract(recipe.id, url);
+  await extract(recipe.id, sourceUrl);
 }
 
 export async function updateRecipeThumbnail(user: User, recipeId: string, thumbnail: File): Promise<void> {
