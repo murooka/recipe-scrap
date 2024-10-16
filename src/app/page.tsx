@@ -37,7 +37,7 @@ export default async function Home(): Promise<ReactNode> {
         </div>
       </main>
       <div className="fixed bottom-4 right-4">
-        <Link href="/recipe/new" className="block rounded-full bg-pink p-3 text-white shadow hover:bg-pink/70">
+        <Link href="/recipe/new" className="block rounded-full bg-primary p-3 text-white shadow hover:bg-primary/70">
           <Plus aria-label="新規レシピ" />
         </Link>
       </div>

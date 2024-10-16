@@ -35,7 +35,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
         <input
           type="file"
           name="thumbnail"
-          className="block text-sm font-medium file:rounded-full file:border file:border-dark-100 file:bg-transparent file:px-4 file:py-2"
+          className="block text-sm font-medium file:rounded-full file:border file:border-secondary file:bg-transparent file:px-4 file:py-2"
         />
       </div>
       <form action={action} className="p-4">

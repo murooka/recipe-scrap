@@ -14,7 +14,7 @@ export default function RootLayout({ children }: Props): ReactNode {
       <head>
         <link rel="shortcut icon" href="/favicon.svg" />
       </head>
-      <body className="text-dark">{children}</body>
+      <body className="">{children}</body>
     </html>
   );
 }
