@@ -41,10 +41,10 @@
     "google-auth-library": "9.14.2",
     "lucide-react": "0.453.0",
     "neverthrow": "8.0.0",
-    "next": "14.2.15",
+    "next": "15.0.0-rc.1",
     "openai": "4.67.3",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "19.0.0-rc-83825814-20241015",
+    "react-dom": "19.0.0-rc-83825814-20241015",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7"
   },
