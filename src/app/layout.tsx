@@ -14,7 +14,9 @@ export default function RootLayout({ children }: Props): ReactNode {
       <head>
         <link rel="shortcut icon" href="/favicon.svg" />
       </head>
-      <body className="">{children}</body>
+      <body>
+        <div className="mx-auto max-w-screen-sm">{children}</div>
+      </body>
     </html>
   );
 }

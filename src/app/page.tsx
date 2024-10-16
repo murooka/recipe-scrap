@@ -29,7 +29,7 @@ export default async function Home(): Promise<ReactNode> {
               <img
                 src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
                 alt=""
-                className="aspect-square object-cover"
+                className="aspect-square w-full object-cover"
               />
               <p className="font-medium">{recipe.name}</p>
             </Link>
