@@ -39,9 +39,9 @@ export function InputImage(props: InputImageProps): ReactNode {
           <button
             type="button"
             onClick={onButtonClick}
-            className="absolute right-4 top-4 rounded bg-secondary-fg/50 p-2"
+            className="absolute right-4 top-4 rounded bg-neutral-800/50 p-2"
           >
-            <RefreshCw className="text-secondary" />
+            <RefreshCw className="text-neutral-200" />
           </button>
         </div>
       ) : (

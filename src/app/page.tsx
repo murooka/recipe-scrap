@@ -23,21 +23,26 @@ export default async function Home(): Promise<ReactNode> {
       </div>
       <main className="relative space-y-4 p-4">
         <div className="grid grid-cols-2 gap-4">
-          {recipes.map((recipe) => (
-            <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
-                alt=""
-                className="aspect-square w-full object-cover"
-              />
-              <p className="font-medium">{recipe.name}</p>
-            </Link>
-          ))}
+          {[...recipes, ...recipes, ...recipes, ...recipes, ...recipes, ...recipes, ...recipes, ...recipes].map(
+            (recipe) => (
+              <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
+                  alt=""
+                  className="aspect-square w-full object-cover"
+                />
+                <p className="font-medium">{recipe.name}</p>
+              </Link>
+            ),
+          )}
         </div>
       </main>
       <div className="fixed bottom-4 right-4">
-        <Link href="/recipe/new" className="block rounded-full bg-primary p-3 text-white shadow hover:bg-primary/70">
+        <Link
+          href="/recipe/new"
+          className="block rounded-full bg-neutral-800 p-3 text-white shadow hover:bg-neutral-800/70"
+        >
           <Plus aria-label="新規レシピ" />
         </Link>
       </div>

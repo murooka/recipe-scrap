@@ -26,7 +26,7 @@ export function Form(_props: FormProps): ReactNode {
         <div className="space-y-2">
           <label htmlFor="thumbnailImage" className="space-x-2 text-sm font-bold">
             <span>サムネイル画像</span>
-            <small className="font-normal text-secondary-fg">任意</small>
+            <small className="font-normal text-neutral-800">任意</small>
           </label>
           <InputImage id="thumbnailImage" name="thumbnailImage" />
         </div>
