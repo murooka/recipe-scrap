@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { Button } from "@components/button";
+import { GcpImage } from "@components/gcp-image";
 import { Header } from "@components/header";
 import { prisma } from "@facade/prisma";
 
@@ -31,14 +32,15 @@ export default async function Page(props: Props): Promise<ReactNode> {
 
   return (
     <>
-      <div className="sticky top-0 z-10">
+      <div className="sticky top-0 z-10 border-b border-neutral-200">
         <Header />
       </div>
-      <main>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {recipe.thumbnailUrl && <img src={recipe.thumbnailUrl} alt="" className="aspect-[4/3] w-full object-cover" />}
-        <section className="space-y-4 p-4">
-          <h1 className="text-xl font-medium">{recipe.name}</h1>
+      <main className="p-4">
+        {recipe.thumbnailUrl && (
+          <GcpImage src={recipe.thumbnailUrl} alt="" className="aspect-video w-full rounded object-cover" />
+        )}
+        <section className="mt-6 grid gap-y-6">
+          <h1 className="text-xl font-bold">{recipe.name}</h1>
           <div>
             <Button asChild variant="outline">
               <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
@@ -46,7 +48,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
           </div>
           <div>
             <p className="font-bold">材料</p>
-            <ul>
+            <ul className="mt-2 list-disc pl-5">
               {recipe.ingredients.map((ingredient) => (
                 <li key={ingredient.name}>
                   {ingredient.name}: {ingredient.amount}
@@ -56,7 +58,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
           </div>
           <div>
             <p className="font-bold">手順</p>
-            <ol className="list-decimal pl-5">
+            <ol className="mt-2 list-decimal pl-5">
               {recipe.steps.map((step) => (
                 <li key={step}>{step}</li>
               ))}
