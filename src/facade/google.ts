@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createErr, createOk, isErr } from "option-t/plain_result";
+import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
 import type { Result } from "option-t/plain_result";
 
 import { createGoogleAuthUrl, getIdTokenClaim } from "../server/auth/google";
@@ -28,7 +28,7 @@ export async function verifyCallback(
   if (code == null) return createErr("code_not_found");
 
   const claim = await getIdTokenClaim(code);
-  if (isErr(claim)) return createErr(claim.err);
+  if (isErr(claim)) return createErr(unwrapErr(claim));
 
-  return createOk({ sub: claim.val.sub });
+  return createOk({ sub: unwrapOk(claim).sub });
 }

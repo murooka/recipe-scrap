@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isErr } from "option-t/plain_result";
+import { isErr, unwrapOk } from "option-t/plain_result";
 
 import { verifySession } from "@facade/auth";
 import type { User } from "@facade/types";
@@ -14,5 +14,5 @@ export async function authenticate(): Promise<User> {
   const maybeUser = await verifySession(sessionCookie.value);
   if (isErr(maybeUser)) redirect("/auth/login");
 
-  return maybeUser.val;
+  return unwrapOk(maybeUser);
 }

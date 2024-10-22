@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
-import { createOk, isOk } from "option-t/plain_result";
+import { createOk, isOk, unwrapErr } from "option-t/plain_result";
 import type { ReactNode } from "react";
 import { useActionState } from "react";
 
@@ -30,7 +30,7 @@ export function Form(_props: FormProps): ReactNode {
           </label>
           <InputImage id="thumbnailImage" name="thumbnailImage" />
         </div>
-        {isOk(state) ? null : <p>{state.err}</p>}
+        {isOk(state) ? null : <p>{unwrapErr(state)}</p>}
         <Button type="submit" disabled={isPending}>
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           登録

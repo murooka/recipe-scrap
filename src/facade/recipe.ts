@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { Recipe } from "@prisma/client";
-import { isErr } from "option-t/plain_result";
+import { isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
 
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
@@ -13,11 +13,11 @@ async function extract(recipeId: string, url: string): Promise<void> {
   const text = await extractText(url);
   const res = await structuralizeRecipe(text);
   if (isErr(res)) {
-    console.log(res.err);
+    console.log(unwrapErr(res));
     throw new Error("server_error");
   }
 
-  const recipe = res.val;
+  const recipe = unwrapOk(res);
 
   await prisma.recipe.update({
     where: { id: recipeId },
