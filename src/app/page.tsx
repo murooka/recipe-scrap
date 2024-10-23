@@ -37,14 +37,18 @@ export default async function Home(): Promise<ReactNode> {
       <div className="grid grid-cols-1 gap-4">
         {recipes.map((recipe) => (
           <div key={recipe.id} className="overflow-hidden rounded border border-neutral-200">
-            <GcpImage
-              src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
-              alt=""
-              className="aspect-video w-full object-cover"
-            />
+            <Link href={`/recipe/${recipe.id}`}>
+              <GcpImage
+                src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
+                alt=""
+                className="aspect-video w-full object-cover"
+              />
+            </Link>
             <div className="grid gap-y-4 p-4">
               <div className="items-stat flex justify-between gap-x-6">
-                <h3 className="text-lg font-bold">{recipe.name}</h3>
+                <Link href={`/recipe/${recipe.id}`}>
+                  <h3 className="text-lg font-bold">{recipe.name}</h3>{" "}
+                </Link>
                 {recipe.RecipeSourceImage && (
                   <Link href={`/recipe/${recipe.id}/source`}>
                     <ImageIcon className="h-7 w-7 p-1" />
@@ -56,11 +60,6 @@ export default async function Home(): Promise<ReactNode> {
                   </Link>
                 )}
               </div>
-              <Button asChild variant="outline" className="w-full">
-                <Link href={`/recipe/${recipe.id}`}>
-                  <p className="font-medium">{recipe.name}</p>
-                </Link>
-              </Button>
             </div>
           </div>
         ))}

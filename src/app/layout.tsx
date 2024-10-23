@@ -18,7 +18,9 @@ export default function RootLayout({ children }: Props): ReactNode {
       </head>
       <body>
         <div className="sticky top-0 z-10 border-b border-neutral-200">
-          <Header />
+          <div className="mx-auto max-w-screen-sm">
+            <Header />
+          </div>
         </div>
         <div className="mx-auto max-w-screen-sm">{children}</div>
       </body>

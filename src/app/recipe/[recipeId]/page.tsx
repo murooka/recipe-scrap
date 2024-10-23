@@ -31,16 +31,16 @@ export default async function Page(props: Props): Promise<ReactNode> {
 
   return (
     <main className="p-4">
+      <div className="flex justify-end">
+        <Button asChild variant="outline">
+          <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
+        </Button>
+      </div>
       {recipe.thumbnailUrl && (
-        <GcpImage src={recipe.thumbnailUrl} alt="" className="aspect-video w-full rounded object-cover" />
+        <GcpImage src={recipe.thumbnailUrl} alt="" className="mt-4 aspect-video w-full rounded object-cover" />
       )}
       <section className="mt-6 grid gap-y-6">
         <h1 className="text-xl font-bold">{recipe.name}</h1>
-        <div>
-          <Button asChild variant="outline">
-            <Link href={`/recipe/${recipe.id}/edit`}>編集</Link>
-          </Button>
-        </div>
         <div>
           <p className="font-bold">材料</p>
           <ul className="mt-2 list-disc pl-5">
