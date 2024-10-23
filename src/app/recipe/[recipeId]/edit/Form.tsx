@@ -17,6 +17,7 @@ type FormProps = {
 };
 export function Form(props: FormProps): ReactNode {
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form action={action}>
       <input type="hidden" name="id" value={props.recipe.id} />
       <InputImage name="thumbnail" defaultImageUrl={props.recipe.thumbnailUrl ?? undefined} />
