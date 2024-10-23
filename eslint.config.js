@@ -37,7 +37,7 @@ export default ts.config(
       "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
       "@typescript-eslint/explicit-module-boundary-types": "error",
       "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" }],
       "@typescript-eslint/restrict-template-expressions": "off",
     },
   },

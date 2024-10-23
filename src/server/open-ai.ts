@@ -22,37 +22,20 @@ export async function structuralizeRecipe(
 
   const content = `
 料理のレシピが書かれたテキストをお渡ししますので、それをJSON形式に変換してください。
-お渡しするテキストはOCRを利用したため不正確であったり、レシピの記載順序が入れ替わってしまっている可能性があることに気をつけてください。。
-返事にJSON以外のテキストは含めず、JSONは以下のJSON Schemaを満たす形にしてください。
+お渡しするテキストは日本語が不正確であったり、レシピ以外の情報が混ざっていたり、レシピの記載順序が入れ替わってしまっている可能性があることに気をつけてください。
+また、1つの手順が極端に長い場合は、不自然でない範囲で適宜分割してください。
+返事にJSON以外のテキストは含めず、JSONは以下のフォーマットにしてください。
 \`\`\`json
 {
-  "$schema": "http://json-schema.org/draft-06/schema#",
-  "$ref": "#/definitions/Recipe",
-  "definitions": {
-    "Ingredient": {
-      "title": "Ingredient",
-      "type": "object",
-      "properties": {
-        "name": { "type": "string" },
-        "amount": { "type": "string" }
-      }
-    }
-  },
-  "title": "Recipe",
-  "type": "object",
-  "properties": {
-    "name": { "type": "string" },
-    "ingredients": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Ingredient"
-      }
-    },
-    "steps": {
-      "type": "array",
-      "items": { "type": "string" }
-    }
-  }
+  name: "料理名",
+  ingredients: [
+    { name: "材料名", amount: "分量" },
+    ...
+  ],
+  steps: [
+    "手順1",
+    ...
+  ]
 }
 \`\`\`
 入力テキストは以下のとおりです。
@@ -60,6 +43,7 @@ export async function structuralizeRecipe(
 ${text}
   `.trim();
 
+  console.log(content);
   const res = await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [{ role: "user", content }],

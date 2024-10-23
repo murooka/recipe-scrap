@@ -5,7 +5,7 @@ import { createErr } from "option-t/plain_result";
 import type { Result } from "option-t/plain_result";
 import { z } from "zod";
 
-import { createRecipeFromImage } from "@facade/recipe";
+import { createRecipeFromImage, createRecipeFromYoutube } from "@facade/recipe";
 
 import { authenticate } from "../../authenticate";
 
@@ -31,6 +31,22 @@ const schema = z.union([
   }),
 ]);
 
+const videoIdPattern = /^[0-9A-Za-z_-]{11}$/;
+function extractYoutubeVideoId(urlOrId: string) {
+  const s = urlOrId.trim();
+  if (s.match(videoIdPattern)) return s;
+
+  try {
+    const url = new URL(s);
+    const v = url.searchParams.get("v");
+    if (v && v.match(videoIdPattern)) return v;
+
+    return null;
+  } catch (_e: unknown) {
+    return null;
+  }
+}
+
 type State = Result<null, string>;
 export async function action(_prevState: State, formData: FormData): Promise<State> {
   const user = await authenticate();
@@ -49,6 +65,10 @@ export async function action(_prevState: State, formData: FormData): Promise<Sta
 
   if (params.sourceType === "image") {
     await createRecipeFromImage(user, params.thumbnailImage ?? null, params.sourceImage);
+  } else if (params.sourceType === "youtube") {
+    const videoId = extractYoutubeVideoId(params.sourceYoutubeUrl);
+    if (videoId == null) return createErr("YouTubeのURLまたはIDを入力してください");
+    await createRecipeFromYoutube(user, videoId);
   }
 
   redirect("/");

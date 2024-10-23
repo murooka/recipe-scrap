@@ -1,13 +1,15 @@
 import "server-only";
 
 import type { Recipe } from "@prisma/client";
-import { isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
+import type { Result } from "option-t/plain_result";
+import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
 
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { structuralizeRecipe } from "../server/open-ai";
 import { uploadVisionImage, uploadUserImage } from "../server/storage";
 import { extractText } from "../server/vision";
+import { getVideoSnippet } from "../server/youtube";
 
 async function extract(recipeId: string, url: string): Promise<void> {
   const text = await extractText(url);
@@ -50,6 +52,37 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
   });
 
   await extract(recipe.id, sourceUrl);
+}
+
+function uniqueBy<T>(arr: T[], key: (item: T) => string): T[] {
+  const map = new Map<string, T>();
+  for (const item of arr) map.set(key(item), item);
+  return [...map.values()];
+}
+
+export async function createRecipeFromYoutube(user: User, videoId: string): Promise<Result<null, string>> {
+  const video = await getVideoSnippet(videoId);
+  if (!video) return createErr("failed_to_get_video");
+
+  const res = await structuralizeRecipe(video?.description);
+  if (isErr(res)) return res;
+
+  const recipe = unwrapOk(res);
+  console.dir(recipe, { depth: null });
+
+  await prisma.recipe.create({
+    data: {
+      name: recipe.name,
+      user: { connect: { id: user.id } },
+      thumbnailUrl: video.thumbnailUrl,
+      ingredients: {
+        createMany: { data: uniqueBy(recipe.ingredients, (v) => v.name) },
+      },
+      steps: recipe.steps,
+    },
+  });
+
+  return createOk(null);
 }
 
 export async function updateRecipe(user: User, recipeId: string, params: { thumbnail?: File }): Promise<void> {
