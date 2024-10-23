@@ -79,6 +79,7 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
         createMany: { data: uniqueBy(recipe.ingredients, (v) => v.name) },
       },
       steps: recipe.steps,
+      RecipeSourceYoutube: { create: { videoId } },
     },
   });
 
