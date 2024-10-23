@@ -14,7 +14,13 @@ export default async function Home(): Promise<ReactNode> {
   const user = await authenticate();
   const recipes = await prisma.recipe.findMany({
     where: { userId: user.id },
-    select: { id: true, name: true, thumbnailUrl: true, RecipeSourceImage: true, RecipeSourceYoutube: true },
+    select: {
+      id: true,
+      name: true,
+      thumbnailUrl: true,
+      RecipeSourceImage: { select: { id: true } },
+      RecipeSourceYoutube: { select: { id: true } },
+    },
   });
 
   return (
@@ -40,8 +46,16 @@ export default async function Home(): Promise<ReactNode> {
             <div className="grid gap-y-4 p-4">
               <div className="items-stat flex justify-between gap-x-6">
                 <h3 className="text-lg font-bold">{recipe.name}</h3>
-                {recipe.RecipeSourceImage && <ImageIcon className="h-7 w-7 p-1" />}
-                {recipe.RecipeSourceYoutube && <YoutubeIcon className="h-7 w-7" />}
+                {recipe.RecipeSourceImage && (
+                  <Link href={`/recipe/${recipe.id}/source`}>
+                    <ImageIcon className="h-7 w-7 p-1" />
+                  </Link>
+                )}
+                {recipe.RecipeSourceYoutube && (
+                  <Link href={`/recipe/${recipe.id}/source`}>
+                    <YoutubeIcon className="h-7 w-7" />
+                  </Link>
+                )}
               </div>
               <Button asChild variant="outline" className="w-full">
                 <Link href={`/recipe/${recipe.id}`}>
