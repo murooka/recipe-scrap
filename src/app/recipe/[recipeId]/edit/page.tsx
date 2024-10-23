@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
-import { Header } from "@components/header";
 import { prisma } from "@facade/prisma";
 
 import { authenticate } from "../../../authenticate";
@@ -30,13 +29,8 @@ export default async function Page(props: Props): Promise<ReactNode> {
   if (recipe == null) notFound();
 
   return (
-    <>
-      <div className="sticky top-0 z-10">
-        <Header />
-      </div>
-      <main>
-        <Form recipe={recipe} />
-      </main>
-    </>
+    <main>
+      <Form recipe={recipe} />
+    </main>
   );
 }
