@@ -64,7 +64,7 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
   const video = await getVideoSnippet(videoId);
   if (!video) return createErr("failed_to_get_video");
 
-  const res = await structuralizeRecipe(video?.description);
+  const res = await structuralizeRecipe(video.title + "\n" + video.description);
   if (isErr(res)) return res;
 
   const recipe = unwrapOk(res);
