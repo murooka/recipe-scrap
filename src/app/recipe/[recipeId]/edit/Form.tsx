@@ -4,6 +4,7 @@ import type { Recipe as PrismaRecipe, Ingredient as PrismaIngredient } from "@pr
 import type { ReactNode } from "react";
 
 import { Button } from "@components/button";
+import { Input } from "@components/input";
 import { InputImage } from "@components/input-image";
 
 import { action } from "./action";
@@ -22,7 +23,7 @@ export function Form(props: FormProps): ReactNode {
       <input type="hidden" name="id" value={props.recipe.id} />
       <InputImage name="thumbnail" defaultImageUrl={props.recipe.thumbnailUrl ?? undefined} />
       <div className="space-y-4 p-4">
-        <h1 className="text-xl font-medium">{props.recipe.name}</h1>
+        <Input type="text" name="name" defaultValue={props.recipe.name} />
         <div>
           <p className="font-bold">材料</p>
           <ul>

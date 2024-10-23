@@ -14,6 +14,10 @@ export async function action(formData: FormData): Promise<void> {
 
   console.log(formData);
 
+  const name = formData.get("name");
+  if (name == null) throw new Error("empty_name");
+  if (typeof name !== "string") throw new Error("invalid_name");
+
   let thumbnail = formData.get("thumbnail") ?? undefined;
   if (typeof thumbnail === "string") throw new Error("invalid_thumbnail");
   if (thumbnail && thumbnail.size === 0) thumbnail = undefined;
@@ -24,7 +28,7 @@ export async function action(formData: FormData): Promise<void> {
   const user = await authenticate();
   if (recipe.userId !== user.id) throw new Error("unauthorized");
 
-  await updateRecipe(user, id, { thumbnail });
+  await updateRecipe(user, id, { name, thumbnail });
 
   redirect(`/recipe/${id}`);
 }

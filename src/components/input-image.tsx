@@ -23,7 +23,7 @@ function useFileDrop(cb: (filelist: FileList) => void) {
 }
 
 type InputImageProps = ComponentProps<"input"> & { defaultImageUrl?: string };
-export function InputImage(props: InputImageProps): ReactNode {
+export function InputImage({ defaultImageUrl, ...props }: InputImageProps): ReactNode {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -54,7 +54,7 @@ export function InputImage(props: InputImageProps): ReactNode {
     };
   }, [inputImageUrl]);
 
-  const imageUrl = inputImageUrl || props.defaultImageUrl;
+  const imageUrl = inputImageUrl || defaultImageUrl;
 
   return (
     <div>
