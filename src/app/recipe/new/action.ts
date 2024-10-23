@@ -38,8 +38,13 @@ function extractYoutubeVideoId(urlOrId: string) {
 
   try {
     const url = new URL(s);
-    const v = url.searchParams.get("v");
-    if (v && v.match(videoIdPattern)) return v;
+    if (url.host === "www.youtube.com") {
+      const v = url.searchParams.get("v");
+      if (v && v.match(videoIdPattern)) return v;
+    } else if (url.host === "youtu.be") {
+      const v = url.pathname.replace("/", "");
+      if (v && v.match(videoIdPattern)) return v;
+    }
 
     return null;
   } catch (_e: unknown) {
