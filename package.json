@@ -34,6 +34,7 @@
     "@google-cloud/storage": "7.13.0",
     "@google-cloud/vision": "4.3.2",
     "@prisma/client": "5.20.0",
+    "@radix-ui/react-radio-group": "1.2.1",
     "@radix-ui/react-slot": "1.1.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
@@ -46,7 +47,8 @@
     "react": "19.0.0-rc-83825814-20241015",
     "react-dom": "19.0.0-rc-83825814-20241015",
     "tailwind-merge": "2.5.4",
-    "tailwindcss-animate": "1.0.7"
+    "tailwindcss-animate": "1.0.7",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",

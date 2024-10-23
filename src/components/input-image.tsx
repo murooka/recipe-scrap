@@ -28,6 +28,10 @@ export function InputImage(props: InputImageProps): ReactNode {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = useCallback((filelist: FileList) => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    input.files = filelist;
     setFile(filelist[0]);
   }, []);
 
