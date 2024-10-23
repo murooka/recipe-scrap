@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "run-p dev:*",
     "dev:next": "next dev",
-    "dev:vitest": "vitest watch",
+    "dev:vitest": "vitest watch --no-clearScreen",
     "prisma": "dotenv -e .env.local -- prisma",
     "build": "next build",
     "start": "next start",
