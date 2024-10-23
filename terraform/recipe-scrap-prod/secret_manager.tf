@@ -24,3 +24,12 @@ resource "google_secret_manager_secret" "openai_api_key" {
     }
   }
 }
+
+resource "google_secret_manager_secret" "youtube_data_api_key" {
+  secret_id = "youtube-data-api-key"
+
+  replication {
+    auto {
+    }
+  }
+}

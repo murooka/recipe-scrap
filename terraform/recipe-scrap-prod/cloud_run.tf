@@ -49,6 +49,15 @@ resource "google_cloud_run_v2_service" "web" {
           }
         }
       }
+      env {
+        name = "YOUTUBE_DATA_API_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.youtube_data_api_key.id
+            version = "latest"
+          }
+        }
+      }
     }
   }
 
