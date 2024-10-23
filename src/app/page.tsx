@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { Plus } from "lucide-react";
+import { ImageIcon, Plus, YoutubeIcon } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -14,7 +14,7 @@ export default async function Home(): Promise<ReactNode> {
   const user = await authenticate();
   const recipes = await prisma.recipe.findMany({
     where: { userId: user.id },
-    select: { id: true, name: true, thumbnailUrl: true },
+    select: { id: true, name: true, thumbnailUrl: true, RecipeSourceImage: true, RecipeSourceYoutube: true },
   });
 
   return (
@@ -38,7 +38,11 @@ export default async function Home(): Promise<ReactNode> {
               className="aspect-video w-full object-cover"
             />
             <div className="grid gap-y-4 p-4">
-              <p className="text-lg font-bold">{recipe.name}</p>
+              <div className="items-stat flex justify-between gap-x-6">
+                <h3 className="text-lg font-bold">{recipe.name}</h3>
+                {recipe.RecipeSourceImage && <ImageIcon className="h-7 w-7 p-1" />}
+                {recipe.RecipeSourceYoutube && <YoutubeIcon className="h-7 w-7" />}
+              </div>
               <Button asChild variant="outline" className="w-full">
                 <Link href={`/recipe/${recipe.id}`}>
                   <p className="font-medium">{recipe.name}</p>
