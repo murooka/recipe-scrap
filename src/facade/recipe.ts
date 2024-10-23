@@ -7,7 +7,7 @@ import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { structuralizeRecipe } from "../server/open-ai";
-import { uploadVisionImage, uploadUserImage } from "../server/storage";
+import { uploadUserImage } from "../server/storage";
 import { extractText } from "../server/vision";
 import { getVideoSnippet } from "../server/youtube";
 
@@ -36,7 +36,7 @@ async function extract(recipeId: string, url: string): Promise<void> {
 
 export async function createRecipeFromImage(user: User, thumbnail: File | null, source: File): Promise<void> {
   const [sourceUrl, thumbnailUrl] = await Promise.all([
-    uploadVisionImage(source),
+    uploadUserImage(user, source),
     thumbnail ? uploadUserImage(user, thumbnail) : Promise.resolve(null),
   ]);
 
