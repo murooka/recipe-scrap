@@ -21,6 +21,7 @@ export default async function Home(): Promise<ReactNode> {
       RecipeSourceImage: { select: { id: true } },
       RecipeSourceYoutube: { select: { id: true } },
     },
+    orderBy: { createdAt: "desc" },
   });
 
   return (
