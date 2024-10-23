@@ -7,11 +7,13 @@ import { Storage } from "@google-cloud/storage";
 
 import type { User } from "./auth";
 
+const bucketName = process.env.GCS_PUBLIC_BUCKET_NAME;
+
 export async function uploadVisionImage(file: File): Promise<string> {
   const storage = new Storage();
 
   const uuid = randomUUID();
-  const storageFile = storage.bucket("recipe-scrap-prod-vision-assets").file(`${uuid}/${file.name}`);
+  const storageFile = storage.bucket(bucketName).file(`${uuid}/${file.name}`);
   console.log(storageFile.name);
 
   const readable = Readable.fromWeb(file.stream() as ReadableStream);
@@ -25,7 +27,7 @@ export async function uploadUserImage(user: User, file: File): Promise<string> {
   const storage = new Storage();
 
   const uuid = randomUUID();
-  const storageFile = storage.bucket("recipe-scrap-prod-user-assets").file(`${user.id}/${uuid}/${file.name}`);
+  const storageFile = storage.bucket(bucketName).file(`${user.id}/${uuid}/${file.name}`);
 
   const readable = Readable.fromWeb(file.stream() as ReadableStream);
   const writable = storageFile.createWriteStream();

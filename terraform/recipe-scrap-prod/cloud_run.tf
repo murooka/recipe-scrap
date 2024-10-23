@@ -58,6 +58,10 @@ resource "google_cloud_run_v2_service" "web" {
           }
         }
       }
+      env {
+        name  = "GCS_PUBLIC_BUCKET_NAME"
+        value = "recipe-scrap-prod-user-assets"
+      }
     }
   }
 
