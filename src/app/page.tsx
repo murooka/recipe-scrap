@@ -37,7 +37,6 @@ export default async function Home(): Promise<ReactNode> {
       <div className="grid grid-cols-1 gap-4">
         {recipes.map((recipe) => (
           <div key={recipe.id} className="overflow-hidden rounded border border-neutral-200">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <GcpImage
               src={recipe.thumbnailUrl ?? "https://placehold.jp/192x192.png"}
               alt=""
