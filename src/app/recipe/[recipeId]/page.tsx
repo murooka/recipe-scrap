@@ -1,3 +1,4 @@
+import { ImageIcon, YoutubeIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
@@ -25,6 +26,8 @@ export default async function Page(props: Props): Promise<ReactNode> {
       thumbnailUrl: true,
       steps: true,
       ingredients: { select: { name: true, amount: true } },
+      RecipeSourceImage: { select: { id: true } },
+      RecipeSourceYoutube: { select: { id: true } },
     },
   });
   if (recipe == null) notFound();
@@ -40,7 +43,19 @@ export default async function Page(props: Props): Promise<ReactNode> {
         <GcpImage src={recipe.thumbnailUrl} alt="" className="mt-4 aspect-video w-full rounded object-cover" />
       )}
       <section className="mt-6 grid gap-y-6">
-        <h1 className="text-xl font-bold">{recipe.name}</h1>
+        <div className="items-stat flex justify-between gap-x-6">
+          <h1 className="text-xl font-bold">{recipe.name}</h1>
+          {recipe.RecipeSourceImage && (
+            <Link href={`/recipe/${recipe.id}/source`}>
+              <ImageIcon className="h-7 w-7 p-1" />
+            </Link>
+          )}
+          {recipe.RecipeSourceYoutube && (
+            <Link href={`/recipe/${recipe.id}/source`}>
+              <YoutubeIcon className="h-7 w-7" />
+            </Link>
+          )}
+        </div>
         <div>
           <p className="font-bold">材料</p>
           <ul className="mt-2 list-disc pl-5">
