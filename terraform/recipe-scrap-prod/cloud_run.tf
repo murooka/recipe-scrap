@@ -15,6 +15,10 @@ resource "google_cloud_run_v2_service" "web" {
         startup_cpu_boost = true
       }
       env {
+        name  = "ORIGIN"
+        value = "https://rscrap.site"
+      }
+      env {
         name  = "GOOGLE_OAUTH2_CLIENT_ID"
         value = "812243067215-78ml2b001pp0kis9dva1qaansj8e24sj.apps.googleusercontent.com"
       }
@@ -26,10 +30,6 @@ resource "google_cloud_run_v2_service" "web" {
             version = "latest"
           }
         }
-      }
-      env {
-        name  = "GOOGLE_OAUTH2_CALLBACK_URL"
-        value = "https://web-812243067215.asia-northeast1.run.app/auth/google/callback"
       }
       env {
         name = "DATABASE_URL"

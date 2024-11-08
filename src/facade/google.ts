@@ -6,15 +6,16 @@ import type { Result } from "option-t/plain_result";
 import { createGoogleAuthUrl, getIdTokenClaim } from "../server/auth/google";
 import { createSecureRandomString } from "../server/util/data";
 
-export function prepareAuthzRequest(): { url: string; state: string } {
+export function prepareAuthzRequest(redirectUri: string): { url: string; state: string } {
   const state = createSecureRandomString(12);
-  const url = createGoogleAuthUrl(state);
+  const url = createGoogleAuthUrl(redirectUri, state);
   return { url, state };
 }
 
 export async function verifyCallback(
   url: URL,
   cookieState: string,
+  redirectUri: string,
 ): Promise<
   Result<
     { sub: string },
@@ -27,7 +28,7 @@ export async function verifyCallback(
   const code = url.searchParams.get("code");
   if (code == null) return createErr("code_not_found");
 
-  const claim = await getIdTokenClaim(code);
+  const claim = await getIdTokenClaim(code, redirectUri);
   if (isErr(claim)) return createErr(unwrapErr(claim));
 
   return createOk({ sub: unwrapOk(claim).sub });

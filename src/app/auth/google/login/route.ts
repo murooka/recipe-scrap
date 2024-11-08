@@ -1,16 +1,16 @@
 export const dynamic = "force-dynamic";
 
+import { cookies } from "next/headers";
+
 import { prepareAuthzRequest } from "@facade/google";
-import { COOKIE_NAME_GOOGLE_STATE, bakeCookie } from "@web/cookie";
+import { COOKIE_NAME_GOOGLE_STATE } from "@web/cookie";
 
-export function GET(_req: Request): Response {
-  const { url, state } = prepareAuthzRequest();
+export async function GET(_req: Request): Promise<Response> {
+  const redirectUri = new URL("/auth/google/callback", process.env.ORIGIN).toString();
+  const { url, state } = prepareAuthzRequest(redirectUri);
 
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: url,
-      ...bakeCookie(COOKIE_NAME_GOOGLE_STATE, state, "/auth/google", "lax"),
-    },
-  });
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME_GOOGLE_STATE, state, { path: "/auth/google", sameSite: "lax" });
+
+  return Response.redirect(url);
 }
