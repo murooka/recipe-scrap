@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -ue
+
+# 引数の数が2つでなければエラー
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <docker image name> <output directory>"
+  exit 1
+fi
+
+# 引数から docker image name と output directory を取得
+IMAGE=$1
+OUTPUT_DIR=$2
+
+ID=$(docker create "$IMAGE")
+docker cp "$ID:/app/.next/static/." "$OUTPUT_DIR"

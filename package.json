@@ -1,5 +1,5 @@
 {
-  "name": "template-nextjs",
+  "name": "recipe-scrap",
   "version": "0.1.0",
   "type": "module",
   "packageManager": "pnpm@9.10.0",
@@ -12,7 +12,7 @@
     "dev:next": "next dev --turbo",
     "dev:vitest": "vitest watch --no-clearScreen",
     "prisma": "dotenv -e .env.local -- prisma",
-    "build": "next build",
+    "build": "prisma generate && next build --no-lint",
     "start": "next start",
     "test": "run-s test:*",
     "test:1": "prettier --check './**/*.{js,json,ts,tsx}'",
@@ -27,8 +27,9 @@
     "prod-deploy": "PROJECT=recipe-scrap-prod pnpm run deploy",
     "deploy": "IMAGE=asia-northeast1-docker.pkg.dev/$PROJECT/cloud-run/web run-s deploy:*",
     "deploy:1": "docker build --platform linux/amd64 -t $IMAGE .",
-    "deploy:2": "docker push $IMAGE:latest",
-    "deploy:3": "gcloud --project $PROJECT run deploy web --image $IMAGE --platform managed --region asia-northeast1"
+    "deploy:2": "./bin/export-static-files $IMAGE ./next-static && gcloud storage rsync -r ./next-static gs://a.rscrap.site/_next/static",
+    "deploy:3": "docker push $IMAGE:latest",
+    "deploy:4": "gcloud --project $PROJECT run deploy web --image $IMAGE --platform managed --region asia-northeast1"
   },
   "dependencies": {
     "@google-cloud/storage": "7.13.0",
