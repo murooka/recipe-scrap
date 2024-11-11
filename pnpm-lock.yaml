@@ -18,6 +18,9 @@ importers:
       '@google-cloud/vision':
         specifier: 4.3.2
         version: 4.3.2
+      '@googleapis/youtube':
+        specifier: 20.0.0
+        version: 20.0.0
       '@prisma/client':
         specifier: 5.21.1
         version: 5.21.1(prisma@5.21.1)
@@ -36,9 +39,6 @@ importers:
       google-auth-library:
         specifier: 9.14.2
         version: 9.14.2
-      googleapis:
-        specifier: 144.0.0
-        version: 144.0.0
       lucide-react:
         specifier: 0.453.0
         version: 0.453.0(react@19.0.0-rc-69d4b800-20241021)
@@ -475,6 +475,10 @@ packages:
   '@google-cloud/vision@4.3.2':
     resolution: {integrity: sha512-JZBM1yW3jspMeYpbtB/HpFbGSwUmQsVXhb+3kwXlkliZJIJ7nomTZC8lFG9obJP1t27tWLMURlmz5EU/H7e7Ow==}
     engines: {node: '>=14.0.0'}
+
+  '@googleapis/youtube@20.0.0':
+    resolution: {integrity: sha512-wdt1J0JoKYhvpoS2XIRHX0g/9ul/B0fQeeJAhuuBIdYINuuLt6/oZYZZCBmkuhtkA3IllXgqgAXOjLtLRAnR2g==}
+    engines: {node: '>=12.0.0'}
 
   '@grpc/grpc-js@1.12.2':
     resolution: {integrity: sha512-bgxdZmgTrJZX50OjyVwz3+mNEnCTNkh3cIqGPWVNeW9jX6bn1ZkU80uPd+67/ZpIJIjRQ9qaHCjhavyoWYxumg==}
@@ -2117,10 +2121,6 @@ packages:
 
   googleapis-common@7.2.0:
     resolution: {integrity: sha512-/fhDZEJZvOV3X5jmD+fKxMqma5q2Q9nZNSF3kn1F18tpxmA86BcTxAGBQdM0N89Z3bEaIs+HVznSmFJEAmMTjA==}
-    engines: {node: '>=14.0.0'}
-
-  googleapis@144.0.0:
-    resolution: {integrity: sha512-ELcWOXtJxjPX4vsKMh+7V+jZvgPwYMlEhQFiu2sa9Qmt5veX8nwXPksOWGGN6Zk4xCiLygUyaz7xGtcMO+Onxw==}
     engines: {node: '>=14.0.0'}
 
   gopd@1.0.1:
@@ -3928,6 +3928,13 @@ snapshots:
       '@google-cloud/promisify': 4.0.0
       google-gax: 4.4.1
       is: 3.3.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  '@googleapis/youtube@20.0.0':
+    dependencies:
+      googleapis-common: 7.2.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -5785,14 +5792,6 @@ snapshots:
       qs: 6.13.0
       url-template: 2.0.8
       uuid: 9.0.1
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-
-  googleapis@144.0.0:
-    dependencies:
-      google-auth-library: 9.14.2
-      googleapis-common: 7.2.0
     transitivePeerDependencies:
       - encoding
       - supports-color

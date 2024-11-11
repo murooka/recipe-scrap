@@ -1,12 +1,11 @@
-import { google } from "googleapis";
-
+import { youtube } from "@googleapis/youtube";
 export type VideoSnippet = {
   title: string;
   description: string;
   thumbnailUrl: string;
 };
 export async function getVideoSnippet(videoId: string): Promise<VideoSnippet | null> {
-  const service = google.youtube("v3");
+  const service = youtube("v3");
   const res = await service.videos.list({
     auth: process.env.YOUTUBE_DATA_API_KEY,
     part: ["snippet"],
