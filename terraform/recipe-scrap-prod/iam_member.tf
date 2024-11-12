@@ -15,3 +15,11 @@ resource "google_project_iam_member" "cloud_run_web__secretmanager_secretaccesso
   member  = google_service_account.cloud_run_web.member
   role    = "roles/secretmanager.secretAccessor"
 }
+
+resource "google_project_iam_binding" "github_actions__github_actions" {
+  project = local.project_id
+  role    = google_project_iam_custom_role.github_actions.id
+  members = [
+    google_service_account.github_actions.member
+  ]
+}
