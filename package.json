@@ -8,7 +8,6 @@
   },
   "private": true,
   "scripts": {
-    "prepare": "prisma generate",
     "dev": "run-p dev:*",
     "dev:next": "next dev --turbo",
     "dev:vitest": "vitest watch --no-clearScreen",
