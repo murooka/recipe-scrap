@@ -46,5 +46,5 @@ export async function deleteAction(formData: FormData): Promise<void> {
 
   await prisma.recipe.update({ where: { id: id }, data: { deletedAt: new Date() } });
 
-  redirect("/recipe");
+  redirect("/");
 }
