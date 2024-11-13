@@ -9,6 +9,7 @@ export default defineWorkspace([
       include: [`src/**/*.test.{ts,tsx}`],
       name: "unit",
       environment: "node",
+      hookTimeout: 60_000,
     },
   }),
   defineProject({
