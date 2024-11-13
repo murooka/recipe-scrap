@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { GcpImage } from "@components/gcp-image";
 import { prisma } from "@facade/prisma";
 
 import { authenticate } from "../../../authenticate";
@@ -35,7 +36,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
       {recipe.RecipeSourceImage && (
         <section>
           <h2 className="font-bold">画像</h2>
-          <p>{recipe.RecipeSourceImage.url}</p>
+          <GcpImage src={recipe.RecipeSourceImage.url} />
         </section>
       )}
       {recipe.RecipeSourceYoutube && (
