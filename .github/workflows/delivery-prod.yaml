@@ -31,6 +31,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - run: pnpm i
       - run: pnpm exec playwright install chromium --with-deps
+      - run: npx prisma generate
       - run: pnpm test
       - run: pnpm run e2e
   delivery:
