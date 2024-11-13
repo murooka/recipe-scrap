@@ -18,8 +18,8 @@ export default async function Home(): Promise<ReactNode> {
       id: true,
       name: true,
       thumbnailUrl: true,
-      RecipeSourceImage: { select: { id: true } },
-      RecipeSourceYoutube: { select: { id: true } },
+      sourceImage: { select: { id: true } },
+      sourceYoutube: { select: { id: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -50,12 +50,12 @@ export default async function Home(): Promise<ReactNode> {
                 <Link href={`/recipe/${recipe.id}`}>
                   <h3 className="text-lg font-bold">{recipe.name}</h3>{" "}
                 </Link>
-                {recipe.RecipeSourceImage && (
+                {recipe.sourceImage && (
                   <Link href={`/recipe/${recipe.id}/source`}>
                     <ImageIcon className="h-7 w-7 p-1" />
                   </Link>
                 )}
-                {recipe.RecipeSourceYoutube && (
+                {recipe.sourceYoutube && (
                   <Link href={`/recipe/${recipe.id}/source`}>
                     <YoutubeIcon className="h-7 w-7" />
                   </Link>

@@ -26,8 +26,8 @@ export default async function Page(props: Props): Promise<ReactNode> {
       thumbnailUrl: true,
       steps: true,
       ingredients: { select: { name: true, amount: true } },
-      RecipeSourceImage: { select: { id: true } },
-      RecipeSourceYoutube: { select: { id: true } },
+      sourceImage: { select: { id: true } },
+      sourceYoutube: { select: { id: true } },
     },
   });
   if (recipe == null) notFound();
@@ -45,12 +45,12 @@ export default async function Page(props: Props): Promise<ReactNode> {
       <section className="mt-6 grid gap-y-6">
         <div className="items-stat flex justify-between gap-x-6">
           <h1 className="text-xl font-bold">{recipe.name}</h1>
-          {recipe.RecipeSourceImage && (
+          {recipe.sourceImage && (
             <Link href={`/recipe/${recipe.id}/source`}>
               <ImageIcon className="h-7 w-7 p-1" />
             </Link>
           )}
-          {recipe.RecipeSourceYoutube && (
+          {recipe.sourceYoutube && (
             <Link href={`/recipe/${recipe.id}/source`}>
               <YoutubeIcon className="h-7 w-7" />
             </Link>

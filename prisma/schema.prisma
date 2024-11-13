@@ -10,9 +10,9 @@ datasource db {
 
 model User {
   id             String          @id @default(uuid()) @db.Uuid
-  UserAuthGoogle UserAuthGoogle?
-  Session        Session[]
-  Recipe         Recipe[]
+  userAuthGoogle UserAuthGoogle?
+  sessions       Session[]
+  recipes        Recipe[]
 }
 
 model UserAuthGoogle {
@@ -31,18 +31,18 @@ model Session {
 }
 
 model Recipe {
-  id                  String               @id @default(uuid()) @db.Uuid
-  userId              String               @db.Uuid
-  user                User                 @relation(fields: [userId], references: [id])
-  name                String
-  thumbnailUrl        String?
-  ingredients         Ingredient[]
-  steps               String[]
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  deletedAt           DateTime?
-  RecipeSourceImage   RecipeSourceImage?
-  RecipeSourceYoutube RecipeSourceYoutube?
+  id            String               @id @default(uuid()) @db.Uuid
+  userId        String               @db.Uuid
+  user          User                 @relation(fields: [userId], references: [id])
+  name          String
+  thumbnailUrl  String?
+  ingredients   Ingredient[]
+  steps         String[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  deletedAt     DateTime?
+  sourceImage   RecipeSourceImage?
+  sourceYoutube RecipeSourceYoutube?
 }
 
 model Ingredient {

@@ -15,7 +15,7 @@ export async function getUserByGoogle(sub: string): Promise<User | null> {
 export async function createUserWithGoogle(sub: string): Promise<User> {
   const user = await prisma.user.create({
     data: {
-      UserAuthGoogle: {
+      userAuthGoogle: {
         create: { id: sub },
       },
     },

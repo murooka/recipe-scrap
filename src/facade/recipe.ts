@@ -47,7 +47,7 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
       steps: [],
       thumbnailUrl: thumbnailUrl,
       user: { connect: { id: user.id } },
-      RecipeSourceImage: { create: { url: sourceUrl } },
+      sourceImage: { create: { url: sourceUrl } },
     },
   });
 
@@ -79,7 +79,7 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
         createMany: { data: uniqueBy(recipe.ingredients, (v) => v.name) },
       },
       steps: recipe.steps,
-      RecipeSourceYoutube: { create: { videoId } },
+      sourceYoutube: { create: { videoId } },
     },
   });
 

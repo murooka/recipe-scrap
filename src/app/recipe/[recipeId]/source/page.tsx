@@ -23,8 +23,8 @@ export default async function Page(props: Props): Promise<ReactNode> {
       thumbnailUrl: true,
       steps: true,
       ingredients: { select: { name: true, amount: true } },
-      RecipeSourceImage: true,
-      RecipeSourceYoutube: true,
+      sourceImage: true,
+      sourceYoutube: true,
     },
   });
   if (recipe == null) notFound();
@@ -33,17 +33,17 @@ export default async function Page(props: Props): Promise<ReactNode> {
     <main className="space-y-4 p-4">
       <h1 className="text-xl font-bold">{recipe.name}</h1>
 
-      {recipe.RecipeSourceImage && (
+      {recipe.sourceImage && (
         <section>
           <h2 className="font-bold">画像</h2>
-          <GcpImage src={recipe.RecipeSourceImage.url} />
+          <GcpImage src={recipe.sourceImage.url} />
         </section>
       )}
-      {recipe.RecipeSourceYoutube && (
+      {recipe.sourceYoutube && (
         <section className="grid gap-y-2">
           <h2 className="font-bold">YouTube</h2>
           <iframe
-            src={`https://www.youtube.com/embed/${recipe.RecipeSourceYoutube.videoId}`}
+            src={`https://www.youtube.com/embed/${recipe.sourceYoutube.videoId}`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
