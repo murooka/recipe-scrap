@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y openssl \
 
 ### tini ###
 FROM base AS tini
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /tini
+ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static /tini
 RUN chmod +x /tini
 
 
@@ -35,18 +35,19 @@ RUN pnpm run build
 
 
 ### runner ###
-FROM base AS runner
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runner
 WORKDIR /app
+ENV TZ=Asia/Tokyo
 ENV NODE_ENV=production
 
-COPY --from=tini --chown=node:node /tini /tini
-ENTRYPOINT ["/tini", "--"]
-COPY --chown=node:node ./public ./public
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=tini --chown=nonroot:nonroot /tini /tini
+ENTRYPOINT ["/tini", "--", "/nodejs/bin/node"]
+COPY --chown=nonroot:nonroot ./public ./public
+COPY --from=builder --chown=nonroot:nonroot /app/.next/standalone ./
+COPY --from=builder --chown=nonroot:nonroot /app/.next/static ./.next/static
 
 USER node
 ENV HOST=0.0.0.0
 ENV PORT=8080
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+CMD [ "server.js" ]
