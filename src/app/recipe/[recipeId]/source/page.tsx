@@ -15,7 +15,7 @@ export default async function Page(props: Props): Promise<ReactNode> {
   const { recipeId } = await props.params;
 
   const recipe = await prisma.recipe.findUnique({
-    where: { id: recipeId, userId: user.id },
+    where: { id: recipeId, userId: user.id, deletedAt: null },
     select: {
       id: true,
       name: true,

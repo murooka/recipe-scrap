@@ -13,7 +13,7 @@ import { authenticate } from "./authenticate";
 export default async function Home(): Promise<ReactNode> {
   const user = await authenticate();
   const recipes = await prisma.recipe.findMany({
-    where: { userId: user.id },
+    where: { userId: user.id, deletedAt: null },
     select: {
       id: true,
       name: true,

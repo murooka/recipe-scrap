@@ -107,5 +107,5 @@ export async function updateRecipeThumbnail(user: User, recipeId: string, thumbn
 }
 
 export async function getRecipes(): Promise<Recipe[]> {
-  return prisma.recipe.findMany();
+  return prisma.recipe.findMany({ where: { deletedAt: null } });
 }

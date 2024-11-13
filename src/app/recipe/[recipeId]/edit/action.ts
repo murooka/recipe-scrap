@@ -7,7 +7,7 @@ import { updateRecipe } from "@facade/recipe";
 
 import { authenticate } from "../../../authenticate";
 
-export async function action(formData: FormData): Promise<void> {
+export async function updateAction(formData: FormData): Promise<void> {
   const id = formData.get("id");
   if (id == null) throw new Error("empty_id");
   if (typeof id !== "string") throw new Error("invalid_id");
@@ -22,7 +22,7 @@ export async function action(formData: FormData): Promise<void> {
   if (typeof thumbnail === "string") throw new Error("invalid_thumbnail");
   if (thumbnail && thumbnail.size === 0) thumbnail = undefined;
 
-  const recipe = await prisma.recipe.findUnique({ where: { id: id } });
+  const recipe = await prisma.recipe.findUnique({ where: { id: id, deletedAt: null } });
   if (recipe == null) throw new Error("recipe_not_found");
 
   const user = await authenticate();
@@ -31,4 +31,20 @@ export async function action(formData: FormData): Promise<void> {
   await updateRecipe(user, id, { name, thumbnail });
 
   redirect(`/recipe/${id}`);
+}
+
+export async function deleteAction(formData: FormData): Promise<void> {
+  const id = formData.get("id");
+  if (id == null) throw new Error("empty_id");
+  if (typeof id !== "string") throw new Error("invalid_id");
+
+  const recipe = await prisma.recipe.findUnique({ where: { id: id, deletedAt: null } });
+  if (recipe == null) throw new Error("recipe_not_found");
+
+  const user = await authenticate();
+  if (recipe.userId !== user.id) throw new Error("unauthorized");
+
+  await prisma.recipe.update({ where: { id: id }, data: { deletedAt: new Date() } });
+
+  redirect("/recipe");
 }
