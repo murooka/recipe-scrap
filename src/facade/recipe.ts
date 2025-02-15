@@ -74,6 +74,31 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
   return createOk(null);
 }
 
+export async function reimportRecipeDetails(recipeId: string): Promise<void> {
+  const recipe = await prisma.recipe.findUniqueOrThrow({
+    where: { id: recipeId },
+    select: {
+      id: true,
+      sourceImage: true,
+      sourceYoutube: true,
+    },
+  });
+
+  let text: string;
+  if (recipe.sourceImage) {
+    text = await extractText(recipe.sourceImage.url);
+  } else if (recipe.sourceYoutube) {
+    const video = await getVideoSnippet(recipe.sourceYoutube.videoId);
+    if (!video) throw new Error(`failed to get video for recipe ${recipe.id}`);
+
+    text = video.title + "\n" + video.description;
+  } else {
+    throw new Error(`no source for recipe ${recipe.id}`);
+  }
+
+  await importDetailsFromText(recipeId, text);
+}
+
 export async function updateRecipe(
   user: User,
   recipeId: string,

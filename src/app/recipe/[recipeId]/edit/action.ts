@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { prisma } from "@facade/prisma";
-import { updateRecipe } from "@facade/recipe";
+import { reimportRecipeDetails, updateRecipe } from "@facade/recipe";
 
 import { authenticate } from "../../../authenticate";
 
@@ -47,4 +47,14 @@ export async function deleteAction(formData: FormData): Promise<void> {
   await prisma.recipe.update({ where: { id: id }, data: { deletedAt: new Date() } });
 
   redirect("/");
+}
+
+export async function reimportAction(_prevState: null, formData: FormData): Promise<null> {
+  const id = formData.get("id");
+  if (id == null) throw new Error("empty_id");
+  if (typeof id !== "string") throw new Error("invalid_id");
+
+  await reimportRecipeDetails(id);
+
+  redirect(`/recipe/${id}`);
 }
