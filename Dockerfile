@@ -25,7 +25,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 ### builder ###
 FROM pnpm AS builder
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm -v
+RUN npm install -g corepack@latest && corepack enable pnpm && pnpm -v
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 COPY . .
 ENV NODE_ENV=production
