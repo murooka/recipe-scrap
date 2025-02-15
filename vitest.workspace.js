@@ -20,7 +20,7 @@ export default defineWorkspace([
       browser: {
         provider: "playwright",
         enabled: true,
-        name: "chromium",
+        instances: [{ browser: "chromium" }],
         headless: true,
       },
     },
