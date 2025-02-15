@@ -4,6 +4,7 @@ import type { Recipe } from "@prisma/client";
 import type { Result } from "option-t/plain_result";
 import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
 
+import { uniqueBy } from "../lib/utils";
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { structuralizeRecipe } from "../server/open-ai";
@@ -52,12 +53,6 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
   });
 
   await extract(recipe.id, sourceUrl);
-}
-
-function uniqueBy<T>(arr: T[], key: (item: T) => string): T[] {
-  const map = new Map<string, T>();
-  for (const item of arr) map.set(key(item), item);
-  return [...map.values()];
 }
 
 export async function createRecipeFromYoutube(user: User, videoId: string): Promise<Result<null, string>> {
