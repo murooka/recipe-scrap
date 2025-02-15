@@ -19,7 +19,6 @@ type FormProps = {
 export function Form(props: FormProps): ReactNode {
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form action={updateAction}>
         <input type="hidden" name="id" value={props.recipe.id} />
         <InputImage name="thumbnail" defaultImageUrl={props.recipe.thumbnailUrl ?? undefined} />
@@ -46,7 +45,7 @@ export function Form(props: FormProps): ReactNode {
           <Button type="submit">保存</Button>
         </div>
       </form>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+
       <form action={deleteAction} className="border-t p-4">
         <input type="hidden" name="id" value={props.recipe.id} />
         <Button type="submit">削除</Button>
