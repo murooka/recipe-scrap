@@ -11,3 +11,7 @@ export function uniqueBy<T>(arr: T[], key: (item: T) => string): T[] {
   for (const item of arr) map.set(key(item), item);
   return [...map.values()];
 }
+
+export function assertNever(value: never): never {
+  throw new Error(`Unexpected value: ${value}`);
+}

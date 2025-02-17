@@ -1,15 +1,14 @@
 import "server-only";
 
-import type { Recipe } from "@prisma/client";
-import type { Result } from "option-t/plain_result";
-import { createOk } from "option-t/plain_result";
+import type { Recipe, RecipeJob } from "@prisma/client";
 
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { importRecipeDetails } from "../server/recipe";
+import { createImportRecipeJob } from "../server/recipe-job";
 import { uploadUserImage } from "../server/storage";
 
-export async function createRecipeFromImage(user: User, thumbnail: File | null, source: File): Promise<void> {
+export async function createRecipeFromImage(user: User, thumbnail: File | null, source: File): Promise<RecipeJob> {
   const [sourceUrl, thumbnailUrl] = await Promise.all([
     uploadUserImage(user, source),
     thumbnail ? uploadUserImage(user, thumbnail) : Promise.resolve(null),
@@ -26,10 +25,10 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
     },
   });
 
-  await importRecipeDetails(createdRecipe.id);
+  return await createImportRecipeJob(createdRecipe.id);
 }
 
-export async function createRecipeFromYoutube(user: User, videoId: string): Promise<Result<null, string>> {
+export async function createRecipeFromYoutube(user: User, videoId: string): Promise<RecipeJob> {
   const createdRecipe = await prisma.recipe.create({
     data: {
       name: "",
@@ -40,9 +39,7 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
     },
   });
 
-  await importRecipeDetails(createdRecipe.id);
-
-  return createOk(null);
+  return await createImportRecipeJob(createdRecipe.id);
 }
 
 export async function reimportRecipeDetails(recipeId: string): Promise<void> {

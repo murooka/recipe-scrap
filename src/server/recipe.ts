@@ -1,14 +1,26 @@
-import { isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
+import type { Result } from "option-t/plain_result";
+import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
+
+import { assertNever } from "../lib/utils";
 
 import { structuralizeRecipe } from "./open-ai";
 import { extractTextFromImage } from "./vision";
 import { getVideoSnippet } from "./youtube";
 
-async function importRecipeDetailsFromText(recipeId: string, text: string): Promise<void> {
+async function importRecipeDetailsFromText(
+  recipeId: string,
+  text: string,
+): Promise<Result<true, "structuralize_failed">> {
   const res = await structuralizeRecipe(text);
   if (isErr(res)) {
-    console.log(unwrapErr(res));
-    throw new Error("server_error");
+    const err = unwrapErr(res);
+    switch (err) {
+      case "empty_response":
+      case "invalid_response":
+        return createErr("structuralize_failed");
+      default:
+        return assertNever(err);
+    }
   }
 
   const structuralized = unwrapOk(res);
@@ -24,9 +36,11 @@ async function importRecipeDetailsFromText(recipeId: string, text: string): Prom
       steps: structuralized.steps,
     },
   });
+
+  return createOk(true);
 }
 
-export async function importRecipeDetails(recipeId: string): Promise<void> {
+export async function importRecipeDetails(recipeId: string): Promise<Result<true, "structuralize_failed">> {
   const recipe = await prisma.recipe.findUniqueOrThrow({
     where: { id: recipeId },
     select: {
@@ -48,5 +62,10 @@ export async function importRecipeDetails(recipeId: string): Promise<void> {
     throw new Error(`no source for recipe ${recipe.id}`);
   }
 
-  await importRecipeDetailsFromText(recipeId, text);
+  const result = await importRecipeDetailsFromText(recipeId, text);
+  if (isErr(result)) {
+    return result;
+  }
+
+  return createOk(true);
 }

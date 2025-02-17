@@ -1,11 +1,14 @@
 "use server";
 
+import type { RecipeJob } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { createErr } from "option-t/plain_result";
 import type { Result } from "option-t/plain_result";
 import { z } from "zod";
 
 import { createRecipeFromImage, createRecipeFromYoutube } from "@facade/recipe";
+import { processRecipeJob } from "@facade/recipe-job";
 
 import { authenticate } from "../../authenticate";
 
@@ -68,13 +71,18 @@ export async function action(_prevState: State, formData: FormData): Promise<Sta
 
   const params = parseResult.data;
 
+  let job: RecipeJob;
   if (params.sourceType === "image") {
-    await createRecipeFromImage(user, params.thumbnailImage ?? null, params.sourceImage);
+    job = await createRecipeFromImage(user, params.thumbnailImage ?? null, params.sourceImage);
   } else if (params.sourceType === "youtube") {
     const videoId = extractYoutubeVideoId(params.sourceYoutubeUrl);
     if (videoId == null) return createErr("YouTubeのURLまたはIDを入力してください");
-    await createRecipeFromYoutube(user, videoId);
+    job = await createRecipeFromYoutube(user, videoId);
   }
+
+  after(async () => {
+    await processRecipeJob(job.id);
+  });
 
   redirect("/");
 }
