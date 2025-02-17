@@ -8,7 +8,7 @@ import type { User } from "../server/auth";
 import { prisma } from "../server/db";
 import { structuralizeRecipe } from "../server/open-ai";
 import { uploadUserImage } from "../server/storage";
-import { extractText } from "../server/vision";
+import { extractTextFromImage } from "../server/vision";
 import { getVideoSnippet } from "../server/youtube";
 
 async function importDetailsFromText(recipeId: string, text: string): Promise<void> {
@@ -50,7 +50,7 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
     },
   });
 
-  const text = await extractText(sourceUrl);
+  const text = await extractTextFromImage(sourceUrl);
   await importDetailsFromText(createdRecipe.id, text);
 }
 
@@ -86,7 +86,7 @@ export async function reimportRecipeDetails(recipeId: string): Promise<void> {
 
   let text: string;
   if (recipe.sourceImage) {
-    text = await extractText(recipe.sourceImage.url);
+    text = await extractTextFromImage(recipe.sourceImage.url);
   } else if (recipe.sourceYoutube) {
     const video = await getVideoSnippet(recipe.sourceYoutube.videoId);
     if (!video) throw new Error(`failed to get video for recipe ${recipe.id}`);
