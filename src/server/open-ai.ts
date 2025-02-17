@@ -48,9 +48,9 @@ ${text}
     model: "gpt-4o-mini",
     messages: [{ role: "user", content }],
   });
+  console.dir(res.choices, { depth: null });
   const message = res.choices[0].message.content;
   if (message == null) {
-    console.dir(res, { depth: null });
     return createErr("empty_response");
   }
 
