@@ -2,36 +2,12 @@ import "server-only";
 
 import type { Recipe } from "@prisma/client";
 import type { Result } from "option-t/plain_result";
-import { createErr, createOk, isErr, unwrapErr, unwrapOk } from "option-t/plain_result";
+import { createOk } from "option-t/plain_result";
 
 import type { User } from "../server/auth";
 import { prisma } from "../server/db";
-import { structuralizeRecipe } from "../server/open-ai";
+import { importRecipeDetails } from "../server/recipe";
 import { uploadUserImage } from "../server/storage";
-import { extractTextFromImage } from "../server/vision";
-import { getVideoSnippet } from "../server/youtube";
-
-async function importDetailsFromText(recipeId: string, text: string): Promise<void> {
-  const res = await structuralizeRecipe(text);
-  if (isErr(res)) {
-    console.log(unwrapErr(res));
-    throw new Error("server_error");
-  }
-
-  const structuralized = unwrapOk(res);
-
-  await prisma.recipe.update({
-    where: { id: recipeId },
-    data: {
-      name: structuralized.name,
-      ingredients: {
-        deleteMany: {},
-        createMany: { data: structuralized.ingredients },
-      },
-      steps: structuralized.steps,
-    },
-  });
-}
 
 export async function createRecipeFromImage(user: User, thumbnail: File | null, source: File): Promise<void> {
   const [sourceUrl, thumbnailUrl] = await Promise.all([
@@ -50,8 +26,7 @@ export async function createRecipeFromImage(user: User, thumbnail: File | null, 
     },
   });
 
-  const text = await extractTextFromImage(sourceUrl);
-  await importDetailsFromText(createdRecipe.id, text);
+  await importRecipeDetails(createdRecipe.id);
 }
 
 export async function createRecipeFromYoutube(user: User, videoId: string): Promise<Result<null, string>> {
@@ -65,38 +40,13 @@ export async function createRecipeFromYoutube(user: User, videoId: string): Prom
     },
   });
 
-  const video = await getVideoSnippet(videoId);
-  if (!video) return createErr("failed_to_get_video");
-
-  const text = video.title + "\n" + video.description;
-  await importDetailsFromText(createdRecipe.id, text);
+  await importRecipeDetails(createdRecipe.id);
 
   return createOk(null);
 }
 
 export async function reimportRecipeDetails(recipeId: string): Promise<void> {
-  const recipe = await prisma.recipe.findUniqueOrThrow({
-    where: { id: recipeId },
-    select: {
-      id: true,
-      sourceImage: true,
-      sourceYoutube: true,
-    },
-  });
-
-  let text: string;
-  if (recipe.sourceImage) {
-    text = await extractTextFromImage(recipe.sourceImage.url);
-  } else if (recipe.sourceYoutube) {
-    const video = await getVideoSnippet(recipe.sourceYoutube.videoId);
-    if (!video) throw new Error(`failed to get video for recipe ${recipe.id}`);
-
-    text = video.title + "\n" + video.description;
-  } else {
-    throw new Error(`no source for recipe ${recipe.id}`);
-  }
-
-  await importDetailsFromText(recipeId, text);
+  await importRecipeDetails(recipeId);
 }
 
 export async function updateRecipe(
